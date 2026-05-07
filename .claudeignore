@@ -1,0 +1,70 @@
+# Files Claude Code should not load into context.
+# Mirrors .gitignore where useful, plus large/binary submission artifacts
+# that aren't meaningful as source code.
+
+# .NET build output
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+*.cache
+*.user
+*.suo
+
+# Test / coverage output
+TestResults/
+coverage/
+*.coverage
+*.coveragexml
+*.trx
+
+# Node / Python / generic build (in case a homework uses a different stack)
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+build/
+
+# Environment & secrets
+.env
+.env.*
+*.env
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Screenshots and binary submission evidence — Claude can't read meaningfully
+docs/screenshots/*.png
+docs/screenshots/*.jpg
+docs/screenshots/*.jpeg
+docs/screenshots/*.gif
+docs/screenshots/*.mp4
+docs/screenshots/*.mov
+**/*.pdf
+
+# Demo artifacts that are large or binary
+demo/*.zip
+demo/*.tar.gz
+
+# Logs
+logs/
+*.log
+
+# Lockfiles — noisy, rarely needed for understanding code
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Drafts that should not influence Claude's reasoning
+.pr-body.md
+.scratch/
