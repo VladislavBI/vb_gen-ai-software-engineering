@@ -4,7 +4,9 @@
       "Bash(dir *)",
       "PowerShell(Get-ChildItem *)",
       "PowerShell(Get-Content *)",
-      "Bash(mkdir *)"
+      "Bash(mkdir *)",
+      "Bash(dotnet new *)",
+      "Bash(git add *)"
     ]
   }
 }

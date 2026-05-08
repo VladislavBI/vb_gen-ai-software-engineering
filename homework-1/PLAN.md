@@ -31,7 +31,7 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 2: Create and list transactions (storage + endpoints)
 - **Goal:** Implement the `Transaction` domain record, the `ITransactionRepository` abstraction, the `ConcurrentDictionary`-backed in-memory implementation, a `TransactionService` for create/list, and the `POST /transactions` + `GET /transactions` endpoints (no validation or filtering yet) returning camelCase JSON with the TASKS.md transaction shape.
