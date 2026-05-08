@@ -49,7 +49,7 @@ Every `homework-N/PLAN.md` MUST follow this shape (verbatim headings):
 
 **TASKS.md commit:** <output of `git rev-parse HEAD` at plan time, or "uncommitted">
 **Created:** YYYY-MM-DD
-**Stack:** <e.g. .NET 8 / ASP.NET Core>
+**Stack:** <e.g. .NET 10 / ASP.NET Core>
 
 ## Overview
 <2-4 sentences: what the homework asks for and the chosen approach. Cite specific TASKS.md requirements by section number.>
@@ -80,6 +80,25 @@ Every `homework-N/PLAN.md` MUST follow this shape (verbatim headings):
 - **`Verify` must exercise behavior, not existence.** `Test-Path src/Controllers/HealthController.cs` is not a verify — `Invoke-RestMethod http://localhost:5000/health` is. The only valid existence-check verifies are for non-code deliverables (e.g. `Test-Path docs/screenshots/ai-prompt.png`).
 - **`Parallel: safe`** — set when this milestone's `Files` list is **disjoint** from the `Files` of every other milestone whose dependencies are simultaneously satisfied (i.e., milestones at the same DAG frontier). Default to `sequential` if unsure.
 - **`Parallel: sequential`** — this milestone touches files that other concurrently-eligible milestones also touch, OR the author has not certified disjointness. The consumer MUST run it on its own.
+
+## Required milestones
+
+Every PLAN.md MUST include a **Tests milestone** — a dedicated step that produces an xUnit test project at `src/HomeworkN.Tests/` (per `../Architecture/testing-strategy.md`) covering every behavior produced by earlier functional milestones. A plan without a Tests milestone is incomplete and MUST be rejected by any consumer.
+
+The Tests milestone:
+
+- **Title** SHOULD start with `Tests` (e.g. `Tests: API + BLL + DAL + validator coverage`).
+- **Depends on** every functional milestone whose behavior it covers — typically every milestone before the docs/demo bundle.
+- **Files** MAY use the glob `src/HomeworkN.Tests/**` (the test project's `.csproj` and its sources). The scaffolding milestone may create the empty `HomeworkN.Tests` project shell so the solution compiles; only the Tests milestone fills it in.
+- **Verify** runs `dotnet test` against the homework's solution and MUST assert two things: (a) `dotnet test` exits 0; (b) **at least one test ran** (a zero-test "pass" is not a pass — see "Things not to do"). If `TASKS.md` pins a coverage threshold (e.g. HW2's 85%), the verify command MUST add `--collect:"XPlat Code Coverage"` and assert the threshold.
+- **`Parallel: sequential`** — it consumes the output of every other functional milestone, so it is never run concurrently with anything.
+- **Exempt from the 1–4 file sizing heuristic** and the 30-second `Verify` budget. Tests legitimately cover many files and a full `dotnet test` run can take minutes. The Tests milestone is the only milestone permitted these exemptions.
+
+Order is typically: scaffolding → feature milestones → **Tests** → docs+screenshots+demo. The Tests milestone is **not** the docs/demo milestone — they remain separate steps.
+
+**Exception:** if and only if `TASKS.md` produces no executable code (e.g. a writeup-only homework), the planner MAY omit the Tests milestone. The omission MUST be recorded in the planner's `ambiguities` array so the orchestrator can surface it to the user.
+
+For per-layer testing scope (API integration via `WebApplicationFactory`, BLL unit with mocked repos, DAL unit, validators) load `../Architecture/testing-strategy.md` when authoring this milestone.
 
 ## Done states
 
@@ -249,6 +268,8 @@ One milestone = one commit. PR-readiness work (README finalization, screenshot a
 ## Things not to do
 
 - Do **not** start coding a homework before `PLAN.md` exists and its milestone list has been approved.
+- Do **not** produce a `PLAN.md` without a Tests milestone (see "Required milestones"). The single documented exception is a writeup-only homework with no executable code, recorded in the planner's `ambiguities`.
+- Do **not** mark a Tests milestone `[x]` if `dotnet test` reported zero tests run. An empty test project is not coverage; the Verify command must assert test count > 0.
 - Do **not** start editing source code for a milestone before its session plan exists.
 - Do **not** edit completed (`[x]`) milestones during a re-plan — rewrite only `[ ]`/`[~]`/`[!]` sections.
 - Do **not** edit completed session plans either; they are part of the immutable evidence trail.
@@ -266,5 +287,6 @@ Before invoking the PR-creation workflow, confirm:
 
 - Every milestone in `PLAN.md` is `[x]`. No `[ ]`, `[~]`, or `[!]` remains.
 - A session plan exists at `homework-N/plans/milestone-<N>.md` for every milestone.
+- The Tests milestone is `[x]`, `dotnet test` for the homework's solution exits 0, and the run reported > 0 tests. (Skip only if the planner recorded a writeup-only exception in `ambiguities`.)
 - The required deliverables exist: `PLAN.md`, `plans/`, `README.md`, `HOWTORUN.md`, `docs/screenshots/`, `demo/` (see root `CLAUDE.md`).
 - `PLAN.md` and every session plan are checked in. They are graded evidence under AI-Usage Documentation (25%).

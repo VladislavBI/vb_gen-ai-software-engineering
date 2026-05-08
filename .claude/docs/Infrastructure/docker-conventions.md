@@ -75,7 +75,7 @@ Substitutions when copying the static template:
 
 - Replace `Bookify` with `HomeworkN` everywhere.
 - Drop the `src/` prefix from `COPY` paths — our `Dockerfile` already lives in `src/`, so paths are project-relative.
-- Bump base-image tags (`aspnet:8.0` / `sdk:8.0`) to match the SDK LTS version pinned in `../Architecture/dotnet-stack.md` (.NET 10 at the time of writing). The two tags must match each other.
+- Bump base-image tags (`aspnet:10.0` / `sdk:10.0`) to match the SDK LTS version pinned in `../Architecture/dotnet-stack.md` (.NET 10). The two tags must match each other.
 - **Copy `Directory.Build.props` before `dotnet restore`** — analyzers configured there must be available during the restore-and-build phase, otherwise the in-container build fails differently than the local build.
 - Do **not** copy the `*.Tests.csproj` — tests are not part of the runtime image. They run via `dotnet test` outside Docker.
 

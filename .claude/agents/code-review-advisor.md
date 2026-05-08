@@ -26,7 +26,7 @@ To do your job well, you need:
 - **The task or intent that motivated the change** — a short description of what the upstream agent was asked to do, so you can judge whether the change actually addresses it.
 - **Acceptance criteria or requirements** (e.g., relevant lines from `TASKS.md`, ticket text, or spec excerpts) — needed to assess completeness.
 - **Project conventions in scope** — `CLAUDE.md` (root and per-homework), `.claude/docs/Architecture/dotnet-stack.md` if .NET, `.editorconfig`, lint configs, naming conventions. Without these you cannot judge style fit.
-- **The target stack and runtime** — language, framework, framework version (e.g., .NET 8 / ASP.NET Core), platform (Windows/PowerShell vs Linux).
+- **The target stack and runtime** — language, framework, framework version (e.g., .NET 10 / ASP.NET Core), platform (Windows/PowerShell vs Linux).
 - **Public API surface affected** — so you can flag breaking changes.
 - **Test files touched or expected** — to evaluate test coverage of the change.
 
