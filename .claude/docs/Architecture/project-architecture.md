@@ -8,6 +8,12 @@ The default backend layout for any homework with a server is **API + BLL + DAL +
 homework-N/
 └── src/
     ├── HomeworkN.sln
+    ├── .editorconfig          # copied verbatim from .claude/static/
+    ├── Directory.Build.props  # copied verbatim from .claude/static/
+    ├── Dockerfile             # adapted from .claude/static/Dockerfile
+    ├── .dockerignore          # optional, recommended
+    ├── docker-compose.yml     # only if TASKS.md requires Postgres/Redis/etc.
+    ├── .env.example           # accompanies docker-compose.yml; .env is gitignored
     ├── HomeworkN.Api/         # ASP.NET Core minimal API host
     │   ├── Program.cs
     │   ├── Endpoints/         # one file per resource group
@@ -25,6 +31,8 @@ homework-N/
         ├── Bll/
         └── Dal/
 ```
+
+The three solution-level files (`.editorconfig`, `Directory.Build.props`, `Dockerfile`) are required for every homework. See `common-rules.md#project-setup-files-every-solution` for the first two and `../Infrastructure/docker-conventions.md` for the Dockerfile.
 
 ## Layer responsibilities and dependency direction
 
@@ -65,9 +73,15 @@ dotnet sln add .\HomeworkN.Bll\HomeworkN.Bll.csproj
 dotnet sln add .\HomeworkN.Dal\HomeworkN.Dal.csproj
 dotnet sln add .\HomeworkN.Tests\HomeworkN.Tests.csproj
 # (then add the project references above)
+
+# Copy solution-level templates from .claude/static/
+Copy-Item ..\..\.claude\static\.editorconfig          .\.editorconfig
+Copy-Item ..\..\.claude\static\Directory.Build.props  .\Directory.Build.props
+Copy-Item ..\..\.claude\static\Dockerfile             .\Dockerfile
+# Then edit Dockerfile per ../Infrastructure/docker-conventions.md
 ```
 
-For PowerShell quirks (encoding, no `&&`) see `../Infrastructure/powershell-conventions.md`.
+For PowerShell quirks (encoding, no `&&`) see `../Infrastructure/powershell-conventions.md`. For the Dockerfile substitutions see `../Infrastructure/docker-conventions.md`.
 
 ## When to deviate
 

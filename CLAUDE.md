@@ -23,9 +23,10 @@ Cross-cutting reference documents live under `.claude/docs/` in three categories
 | If you are about to... | Read first | Notes |
 |---|---|---|
 | Scaffold a new homework backend | `Architecture/dotnet-stack.md` + `Architecture/project-architecture.md` | Versions, packages, API/BLL/DAL layout |
-| Write or modify code in API/BLL/DAL | `Architecture/common-rules.md` | Type choices, endpoint patterns, validation, logging |
+| Write or modify code in API/BLL/DAL | `Architecture/common-rules.md` | Type choices, endpoint patterns, validation, logging, `.editorconfig` + `Directory.Build.props` enforcement |
 | Write or modify tests | `Architecture/testing-strategy.md` | xUnit + FluentAssertions + Moq, per-layer test scope, coverage |
 | Write any PowerShell command (script, `HOWTORUN.md`, demo) | `Infrastructure/powershell-conventions.md` | PS 5.1 quirks, encoding, `Invoke-RestMethod` over `curl` |
+| Add or modify a homework's Dockerfile or `docker-compose.yml` | `Infrastructure/docker-conventions.md` | Multi-stage build, base-image versions, Compose for Postgres/Redis/etc., adapt `.claude/static/Dockerfile` |
 | Open a PR or draft a PR body | `Infrastructure/pull-request-process.md` | Fork-only, branch naming, screenshots, reviewer assignment |
 | Finalize a homework's `README.md` | `Infrastructure/template-variables.md` | Placeholder substitutions |
 | Start or advance a homework plan | `Processes/homework-planning-process.md` | Super-plan + session-plan artifact spec |

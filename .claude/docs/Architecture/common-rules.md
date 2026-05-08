@@ -2,6 +2,27 @@
 
 Conventions applied to every homework's API/BLL/DAL projects. Read once; reapply across homeworks.
 
+## Project setup files (every solution)
+
+Every homework's `src/` directory ships with two files copied **verbatim** from `.claude/static/`:
+
+- **`.editorconfig`** — formatting, naming, and Roslyn analyzer rules. Severities are `error` for almost every style preference, so violations break the build (combined with `EnforceCodeStyleInBuild=true` below). The IDE and `dotnet build` both auto-discover it; no project-level wiring is needed.
+- **`Directory.Build.props`** — applied automatically to **every** `.csproj` underneath it (Api, Bll, Dal, Tests). Enables `TreatWarningsAsErrors=true`, `CodeAnalysisTreatWarningsAsErrors=true`, `EnforceCodeStyleInBuild=true`, `AnalysisMode=All`, and pulls in `SonarAnalyzer.CSharp` as a transitive analyzer for the whole solution.
+
+Copy both into `homework-N/src/` (next to the `.sln`) immediately after `dotnet new sln`. Do **not** modify them per homework — if a rule is wrong, fix it in the static template so every homework picks up the change. Per-project opt-outs (e.g. relaxing `TreatWarningsAsErrors` for `Tests`) belong in the project's own `.csproj`, not in this shared file.
+
+**Authoritative style source**: when generating, modifying, or reviewing C# in this repo, treat `.editorconfig` as the source of truth, not surrounding code (which may pre-date a rule). Read it before authoring code and apply its rules in the diff. The high-impact rules to internalize:
+
+- `csharp_style_namespace_declarations = file_scoped:error` — file-scoped namespaces only.
+- `csharp_style_var_for_built_in_types = false:error`, `csharp_style_var_when_type_is_apparent = true:error` — `int x = 1;` not `var x = 1;`, but `var list = new List<Foo>();` is correct.
+- `dotnet_style_qualification_for_*_field/method/property = false:error` — never write `this.Foo`.
+- `csharp_using_directive_placement = outside_namespace:error` — `using` statements above the namespace.
+- `csharp_style_expression_bodied_properties/operators/accessors = true:error` — single-expression members use `=>` form.
+- `dotnet_style_readonly_field = true:error` — fields that are never reassigned must be `readonly`.
+- `dotnet_code_quality_unused_parameters = all:error` — unused parameters break the build; remove them or discard with `_`.
+
+If a generated diff would fail one of these, the build fails. Self-check against `.editorconfig` before claiming a code change is complete; do not rely on the test suite to surface style errors.
+
 ## Type choices
 
 - **DTOs and domain types**: `record` (immutable, structural equality, plays well with FluentAssertions).
