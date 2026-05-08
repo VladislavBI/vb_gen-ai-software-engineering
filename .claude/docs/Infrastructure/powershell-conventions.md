@@ -28,11 +28,37 @@ Get-ChildItem -Recurse -Filter "TASKS.md"
 Select-String -Path "homework-*\src\**\*.cs" -Pattern "TODO"
 
 # HTTP smoke test against a running homework API
-Invoke-RestMethod -Uri http://localhost:5000/health -Method Get
+Invoke-RestMethod -Uri http://localhost:5080/health -Method Get
 $body = @{ amount = 12.5; currency = "USD" } | ConvertTo-Json
-Invoke-RestMethod -Uri http://localhost:5000/transactions -Method Post `
+Invoke-RestMethod -Uri http://localhost:5080/transactions -Method Post `
     -ContentType 'application/json' -Body $body
 ```
+
+## Canonical Verify pattern for endpoint milestones
+
+Every milestone whose `Verify` block exercises a live endpoint follows this shape — build, start the API in the background, poll, assert with `Invoke-RestMethod`, and **always stop the process in `finally`** so a failed assertion does not leave a port-bound dotnet process behind:
+
+```powershell
+Push-Location homework-N\src
+dotnet build HomeworkN.sln
+if ($LASTEXITCODE -ne 0) { Pop-Location; throw "build failed" }
+$proc = Start-Process -FilePath dotnet `
+    -ArgumentList 'run --project HomeworkN.Api --no-build --urls http://localhost:5080' `
+    -PassThru -WindowStyle Hidden
+try {
+    Start-Sleep -Seconds 4   # give Kestrel time to bind; raise if cold-start is slow
+    # ... Invoke-RestMethod / Invoke-WebRequest assertions go here ...
+} finally {
+    Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+    Pop-Location
+}
+```
+
+### Port discipline
+
+- **`5080`** is the default API port for every homework's Verify block. Do not use `5000` (the SDK default) — it collides with other ASP.NET Core dev runs and with macOS AirPlay on student dual-boot setups.
+- **`5081`** is reserved for the *parallel* API run (e.g. an NBomber load-test scenario that boots its own API while a Verify-time API is still on 5080). Pick a higher unique port for any third concurrent process.
+- Catching a non-2xx response: `Invoke-RestMethod` throws on non-2xx — wrap the call in `try { ... } catch { if ($_.Exception.Response.StatusCode.value__ -ne <expected>) { throw } }`. `Invoke-WebRequest -UseBasicParsing` behaves the same way; use it when you want headers/raw body without throwing on JSON parse failure.
 
 ## Stack-specific commands
 

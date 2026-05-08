@@ -63,8 +63,8 @@ dotnet add .\HomeworkN.Tests\HomeworkN.Tests.csproj reference .\HomeworkN.Dal\Ho
 ```powershell
 # Run from homework-N\
 New-Item -ItemType Directory -Path src; Set-Location src
-dotnet new sln      -n HomeworkN
-dotnet new webapi   -n HomeworkN.Api  --use-minimal-apis
+dotnet new sln      -n HomeworkN --format sln                # .NET 10 SDK creates .slnx by default; force classic .sln so PLAN.md verify blocks (`dotnet build HomeworkN.sln`) resolve.
+dotnet new webapi   -n HomeworkN.Api  --use-minimal-apis --no-openapi  # `--no-openapi` skips the Microsoft.AspNetCore.OpenApi dep; add it back manually if you want WithOpenApi() routing metadata.
 dotnet new classlib -n HomeworkN.Bll
 dotnet new classlib -n HomeworkN.Dal
 dotnet new xunit    -n HomeworkN.Tests
@@ -74,12 +74,17 @@ dotnet sln add .\HomeworkN.Dal\HomeworkN.Dal.csproj
 dotnet sln add .\HomeworkN.Tests\HomeworkN.Tests.csproj
 # (then add the project references above)
 
+# Delete the `dotnet new` template stubs — under TreatWarningsAsErrors + SonarAnalyzer they fail S2094 (empty class), S1186 (empty method), S2699 (no-assert test).
+Remove-Item .\HomeworkN.Bll\Class1.cs, .\HomeworkN.Dal\Class1.cs, .\HomeworkN.Tests\UnitTest1.cs -ErrorAction SilentlyContinue
+
 # Copy solution-level templates from .claude/static/
 Copy-Item ..\..\.claude\static\.editorconfig          .\.editorconfig
 Copy-Item ..\..\.claude\static\Directory.Build.props  .\Directory.Build.props
 Copy-Item ..\..\.claude\static\Dockerfile             .\Dockerfile
 # Then edit Dockerfile per ../Infrastructure/docker-conventions.md
 ```
+
+> **.NET 10 SDK gotchas observed during HW1 M1 scaffold.** `dotnet new sln` defaults to the new XML `.slnx` format — pass `--format sln` for the legacy text format that grep-friendly milestone Verify blocks reference by path. The `webapi` template's `Program.cs` uses `WithOpenApi()` which only resolves when `Microsoft.AspNetCore.OpenApi` is installed; pair `--no-openapi` with the template to drop the dependency, or keep the package and the call. The classlib/xunit templates plant `Class1.cs` / `UnitTest1.cs` whose empty bodies trip Sonar S2094/S1186/S2699 the first time you build with this repo's strict `Directory.Build.props` — delete them as part of scaffolding, not as a follow-up.
 
 For PowerShell quirks (encoding, no `&&`) see `../Infrastructure/powershell-conventions.md`. For the Dockerfile substitutions see `../Infrastructure/docker-conventions.md`.
 

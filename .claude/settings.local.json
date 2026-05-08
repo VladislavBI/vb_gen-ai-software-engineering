@@ -6,7 +6,8 @@
       "PowerShell(Get-Content *)",
       "Bash(mkdir *)",
       "Bash(dotnet new *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
