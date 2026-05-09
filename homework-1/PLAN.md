@@ -58,7 +58,9 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
+
+
 
 ### Milestone 3: Get transaction by id and account balance
 - **Goal:** Add `GET /transactions/{id}` (404 when missing) and `GET /accounts/{accountId}/balance` (computed from completed credits minus debits per account), wiring through `TransactionService` and a new `AccountsEndpoints` map.

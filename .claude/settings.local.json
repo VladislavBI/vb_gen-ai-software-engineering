@@ -7,7 +7,9 @@
       "Bash(mkdir *)",
       "Bash(dotnet new *)",
       "Bash(git add *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(PLAN\")",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\Work\\\\learn\\\\Courses\\\\AI -set\\\\lecture-1\\\\vb_gen-ai-software-engineering\\\\homework-1\" -Directory | Where-Object { $_.Name -eq \"plans\" })"
     ]
   }
 }
