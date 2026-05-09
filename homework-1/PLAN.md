@@ -131,7 +131,7 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 5: Transaction history filters
 - **Goal:** Extend `GET /transactions` to honour `?accountId=`, `?type=`, `?from=YYYY-MM-DD`, and `?to=YYYY-MM-DD` query parameters, combinable, returning only matching rows.

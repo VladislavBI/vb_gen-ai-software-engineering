@@ -1,3 +1,5 @@
+using FluentValidation;
+using Homework1.Api.Validators;
 using Homework1.Bll.Domain;
 using Homework1.Bll.Services;
 
@@ -22,8 +24,20 @@ internal static class TransactionsEndpoints
 
     private static async Task<IResult> CreateTransaction(
         CreateTransactionRequest request,
-        TransactionService service)
+        TransactionService service,
+        IServiceProvider serviceProvider)
     {
+        IValidator<CreateTransactionRequest> validator = serviceProvider.GetRequiredService<IValidator<CreateTransactionRequest>>();
+        FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            var errorDetails = validationResult.Errors
+                .Select(x => new { field = x.PropertyName, message = x.ErrorMessage })
+                .ToList();
+
+            return Results.BadRequest(new { error = "Validation failed", details = errorDetails });
+        }
+
         Transaction transaction = new(
             request.FromAccount,
             request.ToAccount,

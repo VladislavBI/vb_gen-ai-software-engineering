@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
+using FluentValidation;
 using Homework1.Api.Endpoints;
+using Homework1.Api.Validators;
 using Homework1.Bll.Abstractions;
 using Homework1.Bll.Services;
 using Homework1.Dal.Repositories;
@@ -11,6 +13,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<System.Text.Json.JsonSerializerOptions>(options =>
     options.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase);
+
+builder.Services.AddScoped<IValidator<TransactionsEndpoints.CreateTransactionRequest>, CreateTransactionRequestValidator>();
 
 builder.Services.AddSingleton(new ConcurrentDictionary<Guid, InMemoryTransactionRepository.TransactionEntity>());
 builder.Services.AddScoped<InMemoryTransactionRepository>();
