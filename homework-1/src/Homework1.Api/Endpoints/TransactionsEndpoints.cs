@@ -15,6 +15,9 @@ internal static class TransactionsEndpoints
 
         group.MapGet("/", ListTransactions)
             .WithName("ListTransactions");
+
+        group.MapGet("/{id}", GetTransactionById)
+            .WithName("GetTransactionById");
     }
 
     private static async Task<IResult> CreateTransaction(
@@ -55,6 +58,26 @@ internal static class TransactionsEndpoints
             t.CreatedAt)).ToList();
 
         return Results.Ok(responses);
+    }
+
+    private static async Task<IResult> GetTransactionById(Guid id, TransactionService service)
+    {
+        StoredTransaction? transaction = await service.GetByIdAsync(id);
+        if (transaction is null)
+        {
+            return Results.NotFound();
+        }
+
+        var response = new TransactionResponse(
+            transaction.Id,
+            transaction.FromAccount,
+            transaction.ToAccount,
+            transaction.Amount,
+            transaction.Currency,
+            transaction.Type,
+            transaction.CreatedAt);
+
+        return Results.Ok(response);
     }
 
     internal sealed record CreateTransactionRequest(

@@ -6,4 +6,5 @@ public interface ITransactionRepository
 {
     Task<StoredTransaction> CreateAsync(Transaction transaction);
     Task<IReadOnlyList<StoredTransaction>> ListAsync();
+    Task<StoredTransaction?> GetByIdAsync(Guid id);
 }

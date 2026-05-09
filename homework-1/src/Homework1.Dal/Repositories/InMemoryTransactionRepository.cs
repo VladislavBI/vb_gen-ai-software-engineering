@@ -49,6 +49,24 @@ public class InMemoryTransactionRepository : ITransactionRepository
         return Task.FromResult(result);
     }
 
+    public Task<StoredTransaction?> GetByIdAsync(Guid id)
+    {
+        if (_store.TryGetValue(id, out TransactionEntity? entity))
+        {
+            StoredTransaction result = new(
+                entity.Id,
+                entity.FromAccount,
+                entity.ToAccount,
+                entity.Amount,
+                entity.Currency,
+                entity.Type,
+                entity.CreatedAt);
+            return Task.FromResult((StoredTransaction?)result);
+        }
+
+        return Task.FromResult((StoredTransaction?)null);
+    }
+
     public record TransactionEntity(
         Guid Id,
         string FromAccount,

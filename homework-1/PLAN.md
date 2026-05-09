@@ -93,7 +93,7 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 4: Request validation (FluentValidation + ProblemDetails)
 - **Goal:** Reject `POST /transactions` requests where `amount` is non-positive or has more than 2 decimal places, where `fromAccount`/`toAccount` does not match `^ACC-[A-Z0-9]+$`, or where `currency` is not a valid ISO 4217 code, returning HTTP 400 with the TASKS.md error shape (`{ error, details: [{field, message}] }`).

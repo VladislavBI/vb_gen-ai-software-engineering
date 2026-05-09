@@ -28,5 +28,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapTransactions();
+app.MapAccounts();
 
 app.Run();
