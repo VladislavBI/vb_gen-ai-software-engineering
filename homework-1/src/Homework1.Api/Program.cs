@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using FluentValidation;
 using Homework1.Api.Endpoints;
+using Homework1.Api.RateLimiting;
 using Homework1.Api.Validators;
 using Homework1.Bll.Abstractions;
 using Homework1.Bll.Services;
@@ -22,6 +23,8 @@ builder.Services.AddScoped<ITransactionRepository>(sp =>
     sp.GetRequiredService<InMemoryTransactionRepository>());
 builder.Services.AddScoped<TransactionService>();
 
+builder.Services.ConfigureRateLimiting();
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -29,6 +32,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRateLimiter();
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapTransactions();

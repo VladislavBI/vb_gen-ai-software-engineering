@@ -62,4 +62,47 @@ public class TransactionService
 
         return balance;
     }
+
+    public async Task<AccountSummary> GetAccountSummaryAsync(string accountId)
+    {
+        IReadOnlyList<StoredTransaction> transactions = await _repository.ListAsync();
+        decimal totalDeposits = 0m;
+        decimal totalWithdrawals = 0m;
+        int transactionCount = 0;
+        DateTimeOffset? mostRecentTransactionAt = null;
+
+        foreach (StoredTransaction transaction in transactions)
+        {
+            bool isAccountAsRecipient = transaction.ToAccount == accountId;
+            bool isAccountAsSender = transaction.FromAccount == accountId;
+
+            if (isAccountAsRecipient && (transaction.Type == "deposit" || transaction.Type == "credit" || transaction.Type == "transfer"))
+            {
+                totalDeposits += transaction.Amount;
+                transactionCount++;
+                if (mostRecentTransactionAt == null || transaction.CreatedAt > mostRecentTransactionAt)
+                {
+                    mostRecentTransactionAt = transaction.CreatedAt;
+                }
+            }
+            else if (isAccountAsSender && (transaction.Type == "withdrawal" || transaction.Type == "debit" || transaction.Type == "transfer"))
+            {
+                totalWithdrawals += transaction.Amount;
+                transactionCount++;
+                if (mostRecentTransactionAt == null || transaction.CreatedAt > mostRecentTransactionAt)
+                {
+                    mostRecentTransactionAt = transaction.CreatedAt;
+                }
+            }
+        }
+
+        return new AccountSummary(accountId, totalDeposits, totalWithdrawals, transactionCount, mostRecentTransactionAt);
+    }
 }
+
+public record AccountSummary(
+    string AccountId,
+    decimal TotalDeposits,
+    decimal TotalWithdrawals,
+    int TransactionCount,
+    DateTimeOffset? MostRecentTransactionAt);

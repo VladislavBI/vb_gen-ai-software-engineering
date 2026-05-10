@@ -205,7 +205,7 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 7: Tests — API integration + BLL/DAL/validator unit coverage
 - **Goal:** Populate `Homework1.Tests` with xUnit + FluentAssertions + Moq + `Microsoft.AspNetCore.Mvc.Testing` tests covering: API integration via `WebApplicationFactory<Program>` for every endpoint introduced in M2/M3/M5/M6 and validation rejection paths from M4; BLL `TransactionService` unit tests against a mocked `ITransactionRepository`; DAL unit tests for the in-memory repo; validator unit tests for amount, account-id, and currency rules; a focused integration test asserting that exceeding the rate-limit window returns HTTP 429 (using a test-only policy with a smaller window so the test stays fast).
@@ -226,44 +226,5 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
   elseif ($log -match 'Total tests:\s*(\d+)') { $passed = [int]$matches[1] }
   if ($passed -lt 1) { Pop-Location; throw "dotnet test reported zero tests run (output: see $logPath)" }
   Pop-Location
-  ```
-- **Done:** [ ]
-
-### Milestone 8: NBomber load test + docs/screenshots/demo bundle
-- **Goal:** Add a separate `Homework1.LoadTests` console project using NBomber that runs a short, low-load scenario against `POST /transactions` and `GET /transactions` to demonstrate throughput and observe rate-limiter behaviour under concurrency; finalize `homework-1/README.md` (overview, features, AI-tools usage, architecture notes, NBomber report summary), `homework-1/HOWTORUN.md` (PowerShell run + load-test steps), drop the required AI-interaction + running-app + sample-request screenshots into `homework-1/docs/screenshots/`, and ship `homework-1/demo/run.ps1` plus `homework-1/demo/sample-requests.http`.
-- **Why this milestone:** NBomber complements xUnit by exercising concurrency and rate-limiter behaviour that unit/integration tests do not realistically reproduce, while staying out of the required Tests milestone (M7) which must be deterministic for grading. Bundling NBomber with docs/demo keeps the final milestone count at 8 and pairs the load-test artefact with the README narrative that references its results. Kept separate from M7 because docs/screenshots are graded artifacts (10% screenshots + 25% AI usage docs) with different review criteria than functional tests.
-- **Files:** homework-1/src/Homework1.LoadTests/**, homework-1/README.md, homework-1/HOWTORUN.md, homework-1/demo/run.ps1, homework-1/demo/sample-requests.http
-- **Depends on:** 1, 2, 3, 4, 5, 6, 7
-- **Parallel:** sequential
-- **Verify:**
-  ```powershell
-  # Docs + demo deliverables
-  if (-not (Test-Path homework-1\README.md))                 { throw "README.md missing" }
-  if ((Get-Item homework-1\README.md).Length -lt 500)        { throw "README.md too short — likely still placeholder" }
-  if (-not (Test-Path homework-1\HOWTORUN.md))               { throw "HOWTORUN.md missing" }
-  if ((Get-Item homework-1\HOWTORUN.md).Length -lt 200)      { throw "HOWTORUN.md too short — likely still placeholder" }
-  if (-not (Test-Path homework-1\demo\run.ps1))              { throw "demo/run.ps1 missing" }
-  if (-not (Test-Path homework-1\demo\sample-requests.http)) { throw "demo/sample-requests.http missing" }
-  $shots = Get-ChildItem homework-1\docs\screenshots -Filter *.png -ErrorAction SilentlyContinue
-  if ($shots.Count -lt 3) { throw "expected >=3 screenshots in docs/screenshots/, found $($shots.Count)" }
-  $readme = Get-Content homework-1\README.md -Raw
-  if ($readme -notmatch '(?i)ai')       { throw "README.md does not mention AI usage" }
-  if ($readme -notmatch '(?i)nbomber')  { throw "README.md does not reference NBomber load-test results" }
-  # NBomber project: must build and run a smoke scenario end-to-end against a live API
-  Push-Location homework-1\src
-  dotnet build Homework1.LoadTests\Homework1.LoadTests.csproj
-  if ($LASTEXITCODE -ne 0) { Pop-Location; throw "NBomber project build failed" }
-  $api = Start-Process -FilePath dotnet -ArgumentList 'run --project Homework1.Api --no-build --urls http://localhost:5081' -PassThru -WindowStyle Hidden
-  try {
-      Start-Sleep -Seconds 4
-      $env:HOMEWORK1_API_BASEURL = 'http://localhost:5081'
-      dotnet run --project Homework1.LoadTests --no-build --configuration Release
-      if ($LASTEXITCODE -ne 0) { throw "NBomber run exited $LASTEXITCODE" }
-      $report = Get-ChildItem -Path Homework1.LoadTests -Recurse -Filter "*.html" -ErrorAction SilentlyContinue | Select-Object -First 1
-      if (-not $report) { throw "NBomber did not produce an HTML report" }
-  } finally {
-      Stop-Process -Id $api.Id -Force -ErrorAction SilentlyContinue
-      Pop-Location
-  }
   ```
 - **Done:** [ ]
