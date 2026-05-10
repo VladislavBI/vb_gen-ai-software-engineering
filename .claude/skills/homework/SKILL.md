@@ -79,6 +79,25 @@ Both phases delegate to the **`homework-planner`** subagent.
 
 Delegates to the **`homework-milestone-runner`** subagent.
 
+### Confirmation gates
+
+Two mandatory pause points require explicit user approval before the runner may continue. The runner signals each gate by returning a structured result with the gate's status; the skill presents the artefact to the user, collects approval (or edits), then re-dispatches with the appropriate `resume_*` mode.
+
+| Gate | Trigger | What to show the user | Re-dispatch mode |
+|---|---|---|---|
+| **Plan gate** | Runner finishes writing `plans/milestone-<N>.md` | Full session-plan text (Approach + Touch list + Review focus) | `resume_after_plan` |
+| **Review gate** | Runner finishes the final review iteration (no blocking findings remain) | Diff summary + reviewer's sign-off | `resume_after_review` |
+
+Workflow per gate:
+1. Show the artefact to the user.
+2. Ask: **"Approve and continue / Request changes"**. Accept free-text changes.
+3. If changes requested: pass them back to a fresh runner invocation with the gate's `resume_*` mode and a `user_feedback` field containing the requested changes. The runner applies feedback and loops back to the same gate.
+4. Only when the user explicitly approves does the runner proceed past the gate.
+
+**Never skip a gate**, even in `run-all` mode — each gate requires a separate approval before the runner continues.
+
+### Steps
+
 1. **Pre-checks (in skill context):**
    - Read `homework-N/PLAN.md`. Refuse if missing.
    - Find the next eligible milestone: lowest-numbered `[ ]` or `[~]`. If all `[x]`, report complete; if any `[!]` blocks, refuse.
@@ -87,20 +106,25 @@ Delegates to the **`homework-milestone-runner`** subagent.
    - Homework number.
    - Milestone number (specific) — resolve `"next"` here in the skill, do not push that resolution to the subagent.
    - Mode hint: `resume` if the milestone was already `[~]`, else `fresh`.
+   - Confirmation gates are **always active**; the runner must stop at each gate.
 3. **Receive the structured summary** per the runner's Return shape. Parse:
-   - `status`: `"verified"`, `"blocked"`, or `"awaiting"`
+   - `status`: `"verified"`, `"blocked"`, `"awaiting"`, `"awaiting_plan_approval"`, or `"awaiting_review_approval"`
    - `files_changed[]`, `commit`, `review_iterations`, `verify_tail`, `issue`
+   - `session_plan_text` (present when `status == "awaiting_plan_approval"`)
+   - `diff_summary` (present when `status == "awaiting_review_approval"`)
 4. **Report to the user** based on status:
    - `verified` — milestone title, commit hash, files changed, review iteration count, verify tail. Suggest `/homework N next` or `/homework N status`.
    - `blocked` — milestone title, the `Issue:` excerpt, what was tried in the auto-retry. Suggest `/homework N re-plan` or manual fix.
    - `awaiting` — what's needed (typically: super-plan update or external service start). Do not advance.
+   - `awaiting_plan_approval` — display `session_plan_text` in full. Ask the user to approve or provide changes. On approval, re-dispatch with `mode: resume_after_plan`. On changes, re-dispatch with `mode: resume_after_plan` + `user_feedback`.
+   - `awaiting_review_approval` — display `diff_summary` and the reviewer sign-off. Ask the user to approve or provide changes. On approval, re-dispatch with `mode: resume_after_review`. On changes, re-dispatch with `mode: resume_after_review` + `user_feedback`.
 5. **Stop** — do not chain to the next milestone unless the user originally said `run-all`.
 
 ## Phase: Run all remaining (`run-all`)
 
 Loops `next`, with **worktree-based parallel dispatch** where eligible.
 
-1. **Confirm with the user** before starting unattended chained execution. Show the pending milestones and ask "proceed?"
+1. **Confirm with the user** before starting unattended chained execution. Show the pending milestones and ask "proceed?". Note: even in `run-all` mode the two confirmation gates (plan gate and review gate) still apply for every milestone — the loop pauses at each gate and waits for user approval before continuing.
 2. **Loop:**
    - Read PLAN.md. Identify the **current DAG frontier**: every milestone whose `Depends on` is fully `[x]` and whose own `Done` is `[ ]` or `[~]`.
    - **Sequential dispatch** if any frontier milestone is `Parallel: sequential` OR there's only one eligible milestone: invoke `homework-milestone-runner` once for the lowest-numbered eligible milestone in the **main worktree**. Wait for result.
@@ -147,6 +171,7 @@ Echoed from the spec for fast failure at the orchestrator level:
 - **Never** dispatch a `Parallel: sequential` milestone concurrently with anything, even when its dependencies are met.
 - **Never** dispatch in parallel without worktrees — shared-working-tree parallelism is not supported.
 - **Never** chain milestones automatically unless `run-all` was the original subcommand.
+- **Never** let the runner proceed past the plan gate or the review gate without explicit user approval — not even in `run-all` mode.
 - **Never** invoke `homework-pr-creator` from this skill — recommend it as a next step instead.
 - **Never** read source code or run `Verify` in the skill context — those belong to the milestone-runner.
 - **Never** create commits directly in the skill context — both subagents commit their own work (`hw-<N>-init` / `hw-<N>-re-plan` from the planner; `hw-<N>-<M>` from the runner). The skill only creates merge commits during parallel-worktree merge-back.

@@ -14,7 +14,9 @@
       "Read(//tmp/**)",
       "Bash(cd /d \"D:\\\\Work\\\\learn\\\\Courses\\\\AI -set\\\\lecture-1\\\\vb_gen-ai-software-engineering\\\\homework-1\\\\src\")",
       "Bash(Get-ChildItem -Recurse -Directory -Name)",
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(taskkill *)"
     ]
   }
 }

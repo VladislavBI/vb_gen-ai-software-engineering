@@ -67,6 +67,6 @@ internal sealed class CreateTransactionRequestValidator : AbstractValidator<Tran
 
     private static bool IsValidIsoCurrency(string currency)
     {
-        return ValidIsoCurrencies.Contains(currency.ToUpperInvariant());
+        return ValidIsoCurrencies.Contains(currency);
     }
 }

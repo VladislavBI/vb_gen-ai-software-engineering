@@ -227,4 +227,4 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
   if ($passed -lt 1) { Pop-Location; throw "dotnet test reported zero tests run (output: see $logPath)" }
   Pop-Location
   ```
-- **Done:** [ ]
+- **Done:** [x]

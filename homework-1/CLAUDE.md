@@ -9,7 +9,6 @@ This file overrides the root `CLAUDE.md` for `homework-1/` scope. Anything not s
 - **Task 4** says *"Choose at least 1"* — we ship **two** options bundled into milestone 6:
   - **Option A** — `GET /accounts/{accountId}/summary` (totals + count + most-recent timestamp). Reuses existing repository data with no new infrastructure.
   - **Option D** — Per-IP fixed-window rate limiting (100 req/min/IP) via `Microsoft.AspNetCore.RateLimiting`. The middleware ships in `Microsoft.AspNetCore.App` — no extra NuGet package.
-- **NBomber load-test project** (`Homework1.LoadTests`) is added beyond the required xUnit `Homework1.Tests` and bundled with docs/demo into milestone 8. NBomber exists to exercise the rate limiter under concurrency; the deterministic xUnit Tests milestone (M7) stays free of timing-sensitive scenarios so grading is reproducible.
 - **Milestone 2 ships 5 files** (`Transaction.cs`, `ITransactionRepository.cs`, `InMemoryTransactionRepository.cs`, `TransactionService.cs`, `TransactionsEndpoints.cs`), one over the 1–4 sizing heuristic. Splitting storage from the first endpoint pair would leave a milestone with no behavioral verify; the trade-off is recorded in PLAN.md and was accepted.
 
 If a future re-plan reduces or expands this scope, update both `PLAN.md` and this file.
@@ -19,7 +18,6 @@ If a future re-plan reduces or expands this scope, update both `PLAN.md` and thi
 | Port | Use | Where |
 |---|---|---|
 | **5080** | Primary API for every Verify block | `--urls http://localhost:5080` in milestones 1–7 |
-| **5081** | Parallel API for NBomber to hit | Milestone 8 only — main API may still be on 5080 in a separate Verify run |
 
 These deviate from `TASKS.md`'s example port 3000. The 5080/5081 pair is documented in `.claude/docs/Infrastructure/powershell-conventions.md#port-discipline`.
 
