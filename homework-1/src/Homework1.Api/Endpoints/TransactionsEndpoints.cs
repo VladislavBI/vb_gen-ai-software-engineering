@@ -59,9 +59,14 @@ internal static class TransactionsEndpoints
         return Results.Created($"/transactions/{created.Id}", response);
     }
 
-    private static async Task<IResult> ListTransactions(TransactionService service)
+    private static async Task<IResult> ListTransactions(
+        TransactionService service,
+        string? accountId = null,
+        string? type = null,
+        DateOnly? from = null,
+        DateOnly? to = null)
     {
-        IReadOnlyList<StoredTransaction> transactions = await service.ListAsync();
+        IReadOnlyList<StoredTransaction> transactions = await service.ListAsync(accountId, type, from, to);
         var responses = transactions.Select(t => new TransactionResponse(
             t.Id,
             t.FromAccount,

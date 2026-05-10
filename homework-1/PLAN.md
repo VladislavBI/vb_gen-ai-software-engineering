@@ -164,7 +164,7 @@ Homework 1 (TASKS.md Tasks 1–4) asks for a REST API for banking transactions w
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 6: Task 4 — Account summary (Option A) and per-IP rate limiting (Option D)
 - **Goal:** Implement `GET /accounts/{accountId}/summary` returning total deposits, total withdrawals, transaction count, and most-recent transaction timestamp; and add per-IP rate limiting using ASP.NET Core's native `Microsoft.AspNetCore.RateLimiting` middleware (fixed-window: 100 requests/minute/IP, returning HTTP 429 when exceeded).

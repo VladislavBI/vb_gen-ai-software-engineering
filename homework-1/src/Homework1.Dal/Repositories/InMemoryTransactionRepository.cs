@@ -33,7 +33,34 @@ public class InMemoryTransactionRepository : ITransactionRepository
 
     public Task<IReadOnlyList<StoredTransaction>> ListAsync()
     {
-        var transactions = _store.Values
+        return ListAsync(null, null, null, null);
+    }
+
+    public Task<IReadOnlyList<StoredTransaction>> ListAsync(string? accountId, string? type, DateOnly? from, DateOnly? to)
+    {
+        IEnumerable<TransactionEntity> query = _store.Values.AsEnumerable();
+
+        if (!string.IsNullOrEmpty(accountId))
+        {
+            query = query.Where(e => e.FromAccount == accountId || e.ToAccount == accountId);
+        }
+
+        if (!string.IsNullOrEmpty(type))
+        {
+            query = query.Where(e => e.Type == type);
+        }
+
+        if (from.HasValue)
+        {
+            query = query.Where(e => DateOnly.FromDateTime(e.CreatedAt.DateTime) >= from.Value);
+        }
+
+        if (to.HasValue)
+        {
+            query = query.Where(e => DateOnly.FromDateTime(e.CreatedAt.DateTime) <= to.Value);
+        }
+
+        var transactions = query
             .OrderByDescending(e => e.CreatedAt)
             .Select(e => new StoredTransaction(
                 e.Id,

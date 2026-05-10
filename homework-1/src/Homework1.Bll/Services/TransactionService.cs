@@ -22,6 +22,11 @@ public class TransactionService
         return _repository.ListAsync();
     }
 
+    public Task<IReadOnlyList<StoredTransaction>> ListAsync(string? accountId, string? type, DateOnly? from, DateOnly? to)
+    {
+        return _repository.ListAsync(accountId, type, from, to);
+    }
+
     public Task<StoredTransaction?> GetByIdAsync(Guid id)
     {
         return _repository.GetByIdAsync(id);
