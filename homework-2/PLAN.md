@@ -98,7 +98,7 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 4: Auto-classification engine
 - **Goal:** Implement keyword-based category + priority classification with `POST /tickets/{id}/auto-classify` returning `{ category, priority, confidence, reasoning, keywordsFound[] }`, plus an opt-in `?autoClassify=true` flag on `POST /tickets`.
