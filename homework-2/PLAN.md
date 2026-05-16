@@ -31,7 +31,7 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 2: Ticket CRUD endpoints with validation
 - **Goal:** Implement `POST /tickets`, `GET /tickets`, `GET /tickets/{id}`, `PUT /tickets/{id}`, `DELETE /tickets/{id}` with FluentValidation rules (email format, subject 1–200, description 10–2000, enum membership) returning proper 201/200/400/404 status codes.
