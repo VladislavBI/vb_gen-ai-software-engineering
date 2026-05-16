@@ -43,7 +43,9 @@ internal static class TicketsEndpoints
     private static async Task<IResult> CreateTicket(
         CreateTicketRequest request,
         TicketService service,
-        IValidator<CreateTicketRequest> validator)
+        IValidator<CreateTicketRequest> validator,
+        TicketClassifier classifier,
+        bool autoClassify = false)
     {
         FluentValidation.Results.ValidationResult validationResult = await validator.ValidateAsync(request);
         if (!validationResult.IsValid)
@@ -67,6 +69,16 @@ internal static class TicketsEndpoints
             request.Category ?? Category.Other,
             request.Priority ?? Priority.Medium
         );
+
+        if (autoClassify)
+        {
+            ClassificationResult classification = classifier.Classify(ticket);
+            ticket = await service.UpdateAsync(
+                ticket.Id,
+                category: classification.Category,
+                priority: classification.Priority
+            ) ?? ticket;
+        }
 
         TicketResponse response = ToResponse(ticket);
         return Results.Created($"/tickets/{response.Id}", response);

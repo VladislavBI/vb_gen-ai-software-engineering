@@ -128,7 +128,7 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 5: Filtering and list query
 - **Goal:** Extend `GET /tickets` with query-string filters for `category`, `priority`, `status`, and combined filtering (matches TASKS.md Task 5's "combined filtering by category and priority" integration scenario).

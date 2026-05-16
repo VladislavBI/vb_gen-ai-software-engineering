@@ -22,6 +22,7 @@ builder.Services.AddScoped<IValidator<UpdateTicketRequest>, UpdateTicketValidato
 builder.Services.AddSingleton<ITicketRepository, InMemoryTicketRepository>();
 builder.Services.AddScoped<TicketService>();
 builder.Services.AddScoped<TicketImportService>();
+builder.Services.AddScoped<TicketClassifier>();
 
 WebApplication app = builder.Build();
 
@@ -30,6 +31,7 @@ _ = app.MapGet("/health", () => new { status = "ok" })
     .Produces(200);
 
 app.MapTicketsImport();
+app.MapClassify();
 app.MapTickets();
 
 app.Run();
