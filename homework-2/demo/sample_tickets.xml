@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tickets>
+  <ticket>
+    <customerId>CUST-201</customerId>
+    <customerEmail>alice.clark@example.com</customerEmail>
+    <customerName>Alice Clark</customerName>
+    <subject>Cannot update email address</subject>
+    <description>When I try to update my email address in the account settings, I get an error saying 'Email already in use'. But this is my new email address.</description>
+    <category>account_access</category>
+    <priority>medium</priority>
+    <tags>account,email,settings</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-202</customerId>
+    <customerEmail>bob.miller@example.com</customerEmail>
+    <customerName>Bob Miller</customerName>
+    <subject>Refund pending for 14 days</subject>
+    <description>I requested a refund on my subscription 14 days ago and was told it would take 5-7 business days. Still waiting for the money to appear in my account.</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <tags>refund,payment,billing</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-203</customerId>
+    <customerEmail>carol.davis@example.com</customerEmail>
+    <customerName>Carol Davis</customerName>
+    <subject>Add support for bulk ticket creation API</subject>
+    <description>We need an API endpoint to create multiple tickets in a single request. Currently, we have to make individual API calls which is inefficient for our workflow.</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <tags>api,bulk,efficiency</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-204</customerId>
+    <customerEmail>david.johnson@example.com</customerEmail>
+    <customerName>David Johnson</customerName>
+    <subject>App freezes during report generation</subject>
+    <description>When generating large reports with 10000+ rows, the application becomes completely unresponsive and must be force-closed.</description>
+    <category>bug_report</category>
+    <priority>high</priority>
+    <tags>performance,reports,freeze</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-205</customerId>
+    <customerEmail>eva.martin@example.com</customerEmail>
+    <customerName>Eva Martin</customerName>
+    <subject>Lost access to account</subject>
+    <description>My account suddenly became inaccessible. Getting 'Access Denied' error on login. No changes were made by me. Urgent assistance needed.</description>
+    <category>account_access</category>
+    <priority>urgent</priority>
+    <tags>access,denied,urgent</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-206</customerId>
+    <customerEmail>frank.wilson@example.com</customerEmail>
+    <customerName>Frank Wilson</customerName>
+    <subject>Incorrect balance displayed</subject>
+    <description>My account balance shows $500 but recent transactions don't add up. Some transactions appear to be missing from the history.</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <tags>balance,accounting,transactions</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-207</customerId>
+    <customerEmail>grace.lee@example.com</customerEmail>
+    <customerName>Grace Lee</customerName>
+    <subject>Feature: Custom user roles</subject>
+    <description>Need the ability to create custom user roles with specific permissions. Standard roles don't match our organizational structure.</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <tags>permissions,roles,customization</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-208</customerId>
+    <customerEmail>henry.jackson@example.com</customerEmail>
+    <customerName>Henry Jackson</customerName>
+    <subject>Search feature shows irrelevant results</subject>
+    <description>Searching for 'payment' returns results for 'paper' and 'paycheck'. Search relevance is poor and needs improvement.</description>
+    <category>bug_report</category>
+    <priority>medium</priority>
+    <tags>search,relevance,ux</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-209</customerId>
+    <customerEmail>iris.anderson@example.com</customerEmail>
+    <customerName>Iris Anderson</customerName>
+    <subject>Cannot invite team members</subject>
+    <description>The invite team member functionality is not working. Email invitations are not being sent and no error message is displayed.</description>
+    <category>technical_issue</category>
+    <priority>high</priority>
+    <tags>team,collaboration,email</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-210</customerId>
+    <customerEmail>jack.green@example.com</customerEmail>
+    <customerName>Jack Green</customerName>
+    <subject>Add webhook support for custom integrations</subject>
+    <description>Would like webhook support so we can trigger actions in our systems when ticket status changes. This would improve our automation.</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <tags>webhooks,integration,automation</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-211</customerId>
+    <customerEmail>karen.white@example.com</customerEmail>
+    <customerName>Karen White</customerName>
+    <subject>Typos in email notifications</subject>
+    <description>The notification emails contain several typos and grammatical errors. 'Update availble' should be 'Update available', etc.</description>
+    <category>bug_report</category>
+    <priority>low</priority>
+    <tags>email,typo,copy</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-212</customerId>
+    <customerEmail>leo.harris@example.com</customerEmail>
+    <customerName>Leo Harris</customerName>
+    <subject>API response times degraded</subject>
+    <description>API endpoints that normally respond in 200ms are taking 2-5 seconds. Started happening after the last deployment. Needs immediate investigation.</description>
+    <category>technical_issue</category>
+    <priority>urgent</priority>
+    <tags>api,performance,critical</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-213</customerId>
+    <customerEmail>maya.brown@example.com</customerEmail>
+    <customerName>Maya Brown</customerName>
+    <subject>Cannot download monthly invoice</subject>
+    <description>Invoice download button doesn't work. Clicking it does nothing. Need this invoice for my records.</description>
+    <category>billing_question</category>
+    <priority>medium</priority>
+    <tags>invoice,download,billing</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-214</customerId>
+    <customerEmail>noah.smith@example.com</customerEmail>
+    <customerName>Noah Smith</customerName>
+    <subject>Feature: Notification preferences</subject>
+    <description>Allow users to customize which notifications they receive and their frequency. Currently getting too many emails.</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <tags>notifications,preferences,settings</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-215</customerId>
+    <customerEmail>olivia.taylor@example.com</customerEmail>
+    <customerName>Olivia Taylor</customerName>
+    <subject>Unable to change password</subject>
+    <description>The change password form doesn't accept any password I enter. Error message just says 'Invalid password'.</description>
+    <category>account_access</category>
+    <priority>high</priority>
+    <tags>password,account,access</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-216</customerId>
+    <customerEmail>paul.jones@example.com</customerEmail>
+    <customerName>Paul Jones</customerName>
+    <subject>Billing statement incomplete</subject>
+    <description>This month's billing statement is missing transactions from the first week. Need a complete statement for accounting purposes.</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <tags>billing,statement,accounting</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-217</customerId>
+    <customerEmail>quinn.davis@example.com</customerEmail>
+    <customerName>Quinn Davis</customerName>
+    <subject>Mobile app lacks dark mode</subject>
+    <description>The web version has dark mode but the mobile app doesn't. Would be appreciated to have feature parity.</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <tags>mobile,ui,dark-mode</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-218</customerId>
+    <customerEmail>rachel.robinson@example.com</customerEmail>
+    <customerName>Rachel Robinson</customerName>
+    <subject>Cache not being cleared on updates</subject>
+    <description>After updating information, old cached data is still being served. Have to do a hard refresh to see the changes.</description>
+    <category>technical_issue</category>
+    <priority>medium</priority>
+    <tags>cache,performance,data</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-219</customerId>
+    <customerEmail>samuel.wilson@example.com</customerEmail>
+    <customerName>Samuel Wilson</customerName>
+    <subject>Feature: Advanced audit logging</subject>
+    <description>Need more detailed audit logs showing who changed what and when. Current logs are too basic for compliance requirements.</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <tags>audit,logging,compliance</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-220</customerId>
+    <customerEmail>tanya.miller@example.com</customerEmail>
+    <customerName>Tanya Miller</customerName>
+    <subject>Browser session expires unexpectedly</subject>
+    <description>Session expires even when actively using the application. Requires frequent re-authentication which is frustrating.</description>
+    <category>technical_issue</category>
+    <priority>high</priority>
+    <tags>session,authentication,ux</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-221</customerId>
+    <customerEmail>um.clark@example.com</customerEmail>
+    <customerName>Uma Clark</customerName>
+    <subject>Incomplete transaction record</subject>
+    <description>One of my transactions shows amount as $0.00 in the transaction history although the payment was processed correctly.</description>
+    <category>billing_question</category>
+    <priority>high</priority>
+    <tags>transactions,billing,data</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-222</customerId>
+    <customerEmail>victor.robinson@example.com</customerEmail>
+    <customerName>Victor Robinson</customerName>
+    <subject>Add geolocation-based pricing</subject>
+    <description>Would like support for location-based pricing. Show prices in local currency based on user location.</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <tags>pricing,localization,geolocation</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-223</customerId>
+    <customerEmail>wendy.harris@example.com</customerEmail>
+    <customerName>Wendy Harris</customerName>
+    <subject>Inconsistent behavior on iOS vs Android</subject>
+    <description>Mobile app behaves differently on iOS and Android for the same operations. Form validation works on iOS but not Android.</description>
+    <category>bug_report</category>
+    <priority>high</priority>
+    <tags>mobile,consistency,validation</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-224</customerId>
+    <customerEmail>xavier.clark@example.com</customerEmail>
+    <customerName>Xavier Clark</customerName>
+    <subject>Feature: Email signature customization</subject>
+    <description>Allow users to set custom email signatures for outgoing support emails. Currently all emails have the same generic signature.</description>
+    <category>feature_request</category>
+    <priority>low</priority>
+    <tags>email,customization,signature</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-225</customerId>
+    <customerEmail>yara.miller@example.com</customerEmail>
+    <customerName>Yara Miller</customerName>
+    <subject>Export format compatibility issue</subject>
+    <description>Exported CSV files cannot be opened in Excel on macOS. File encoding or delimiter issues suspected.</description>
+    <category>technical_issue</category>
+    <priority>medium</priority>
+    <tags>export,csv,compatibility</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-226</customerId>
+    <customerEmail>zoe.johnson@example.com</customerEmail>
+    <customerName>Zoe Johnson</customerName>
+    <subject>Notification banner blocks important content</subject>
+    <description>Notification banners at the top of the page don't auto-dismiss and block access to important buttons. Placement needs adjustment.</description>
+    <category>bug_report</category>
+    <priority>medium</priority>
+    <tags>ui,notifications,accessibility</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-227</customerId>
+    <customerEmail>adam.williams@example.com</customerEmail>
+    <customerName>Adam Williams</customerName>
+    <subject>Feature: Integration with CRM system</subject>
+    <description>Need native integration with Salesforce or similar CRM to sync customer data and ticket information.</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <tags>integration,crm,salesforce</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-228</customerId>
+    <customerEmail>bella.taylor@example.com</customerEmail>
+    <customerName>Bella Taylor</customerName>
+    <subject>Cannot filter tickets by date range</subject>
+    <description>Date range filter is not working in the ticket list. Can filter by status and priority but not by date created or updated.</description>
+    <category>technical_issue</category>
+    <priority>medium</priority>
+    <tags>filters,dates,search</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-229</customerId>
+    <customerEmail>curtis.anderson@example.com</customerEmail>
+    <customerName>Curtis Anderson</customerName>
+    <subject>API documentation link broken</subject>
+    <description>The API documentation link on the help page returns 404. Need access to the API docs.</description>
+    <category>bug_report</category>
+    <priority>low</priority>
+    <tags>documentation,api,broken-link</tags>
+  </ticket>
+  <ticket>
+    <customerId>CUST-230</customerId>
+    <customerEmail>diana.jackson@example.com</customerEmail>
+    <customerName>Diana Jackson</customerName>
+    <subject>Enable SSO for enterprise customers</subject>
+    <description>Enterprise customers request the ability to set up single sign-on with their identity provider for easier access management.</description>
+    <category>feature_request</category>
+    <priority>medium</priority>
+    <tags>sso,enterprise,authentication</tags>
+  </ticket>
+</tickets>

@@ -27,7 +27,8 @@ Secondary inputs (use the decision table in root `CLAUDE.md` to pick which to lo
 The skill (or direct invoker) passes you a task spec with:
 - **Homework number** (e.g., `3`) — required.
 - **Milestone number** (e.g., `4`) — required. The skill always resolves `"next"` to a specific number before invoking you.
-- **Mode hint** if relevant: `fresh` (start), `resume` (the milestone is `[~]` from a prior session).
+- **Mode hint** if relevant: `fresh` (start), `resume` (the milestone is `[~]` from a prior session), `resume_after_plan` (session plan approved — skip writing the plan, proceed to the inner edit loop), `resume_after_review` (review approved — skip the inner loop, proceed to Verify).
+- **`user_feedback`** (optional, paired with `resume_after_plan` or `resume_after_review`): free-text changes the user requested. Apply them before proceeding past the gate.
 - **Worktree context** (optional): if the orchestrator dispatched you into a parallel worktree, it tells you the worktree path and the branch name (e.g., `hw-3-5-work`). When this is set, your `git` commands run against that worktree's branch automatically — verify with `git rev-parse --abbrev-ref HEAD` at the start to confirm.
 
 If any required input is missing or ambiguous, ask before acting.
@@ -45,11 +46,13 @@ If any required input is missing or ambiguous, ask before acting.
 7. **Load milestone-relevant docs** per the decision table — only what this milestone needs (don't speculatively load everything).
 8. **Read existing files** listed in `Files` (so you understand current state before editing).
 9. **Write the session plan** at `homework-N/plans/milestone-<N>.md` per the session-plan schema in the spec. Required sections (verbatim headings): `## Approach`, `## Touch list`, `## Review focus`, `## Notes` (start empty). **Do not edit any source code yet.**
+   - **STOP here (plan gate).** Return `status: "awaiting_plan_approval"` with `session_plan_text` set to the full contents of the session plan just written. Do not proceed to editing or review until the orchestrator re-dispatches you with `mode: resume_after_plan`. When re-dispatched with `resume_after_plan`, skip steps 1–9 (session plan already written) and apply any `user_feedback` to the session plan before continuing.
 10. **Run the inner loop:**
     - **Edit** only files in the milestone's `Files` list. Stay strictly within scope.
     - **Review** — invoke the `code-review-advisor` agent via the Agent tool. Pass it the diff and the session plan's `Review focus` as criteria. The reviewer is read-only and returns structured findings.
     - **Apply** every reviewer finding. If you reject one, append the reasoning to the session plan's `Notes` section.
     - **Re-review** by invoking `code-review-advisor` again on the new diff. Loop until the reviewer reports no blocking findings.
+   - **STOP here (review gate).** Once the reviewer reports no blocking findings, return `status: "awaiting_review_approval"` with `diff_summary` set to a summary of all changes made plus the reviewer's sign-off excerpt. Do not run Verify or commit until the orchestrator re-dispatches you with `mode: resume_after_review`. When re-dispatched with `resume_after_review`, skip steps 1–10 (review loop complete) and apply any `user_feedback` by re-entering the inner loop before proceeding to Verify.
 11. **Run the Verify block** from PLAN.md exactly as written, via the **PowerShell** tool (never Bash for the verify itself). Capture exit codes and output.
 12. **On verify success** (every command exited 0):
     - Set the milestone's `Done` to `[x]` in PLAN.md.
@@ -81,11 +84,13 @@ End your turn with the result summary as the final content of your reply, in thi
   "homework": <N>,
   "milestone": <M>,
   "title": "<milestone title>",
-  "status": "verified" | "blocked" | "awaiting",
+  "status": "verified" | "blocked" | "awaiting" | "awaiting_plan_approval" | "awaiting_review_approval",
   "files_changed": ["<path>", ...],
   "session_plan": "homework-<N>/plans/milestone-<M>.md",
+  "session_plan_text": "<full session plan text, present only when status == awaiting_plan_approval, else null>",
+  "diff_summary": "<change summary + reviewer sign-off excerpt, present only when status == awaiting_review_approval, else null>",
   "commit": "<short hash, or null if not committed>",
-  "verify_tail": "<last few lines of Verify output, or null on awaiting>",
+  "verify_tail": "<last few lines of Verify output, or null when verify has not run>",
   "review_iterations": <int>,
   "issue": "<one-line issue text on blocked/awaiting, else null>",
   "next_step": "<recommended next /homework subcommand>"
@@ -95,6 +100,8 @@ End your turn with the result summary as the final content of your reply, in thi
 - `status: "verified"` — milestone passed; commit hash present; `issue: null`.
 - `status: "blocked"` — auto-retry exhausted; PLAN.md marked `[!]`; `issue` describes the failure.
 - `status: "awaiting"` — milestone mis-scoped or external dependency unmet (e.g., service not running); PLAN.md left `[~]`; `issue` describes what's needed.
+- `status: "awaiting_plan_approval"` — session plan written; waiting for orchestrator to show the user the plan and re-dispatch with `mode: resume_after_plan`. `session_plan_text` is populated; all other outcome fields are null.
+- `status: "awaiting_review_approval"` — review loop complete (no blocking findings); waiting for orchestrator to show the user the diff and re-dispatch with `mode: resume_after_review`. `diff_summary` is populated; `review_iterations` reflects the count so far; `commit` is null (not yet committed).
 - `review_iterations` — how many times `code-review-advisor` was invoked. Helps the user see where the loop is spending effort.
 
 Above the JSON block, you may include a short prose summary (≤5 lines) for human readability — but the JSON block must be the last thing in your reply, exactly once, and parse-able.
@@ -106,6 +113,9 @@ Above the JSON block, you may include a short prose summary (≤5 lines) for hum
 - **Never modify completed (`[x]`) milestones** in PLAN.md. Their code and their plan section are frozen.
 - **Never combine commits across milestones.** One milestone = one commit (the milestone's code + the session plan + the PLAN.md tick).
 - **Never skip the inner review loop.** A milestone is not complete until the reviewer is satisfied AND verify passes.
+- **Never proceed past the plan gate** (step 9) without returning `status: "awaiting_plan_approval"` and waiting for a `resume_after_plan` re-dispatch.
+- **Never proceed past the review gate** (step 10) without returning `status: "awaiting_review_approval"` and waiting for a `resume_after_review` re-dispatch. The review gate is only reached once the reviewer reports no blocking findings — do not stop mid-loop.
+- **Never run Verify or commit** unless the mode is `resume_after_review` (i.e., the user has approved the review).
 
 ## Hard Constraints
 
