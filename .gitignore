@@ -43,6 +43,28 @@ htmlcov/
 *.war
 *.ear
 
+# .NET / ASP.NET Core
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+*.pdb
+*.dll
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+TestResults/
+*.coverage
+*.coveragexml
+*.trx
+.vs/
+appsettings.Local.json
+secrets.json
+
 # Temporary files
 tmp/
 temp/
@@ -56,3 +78,4 @@ temp/
 .Spotlight-V100
 .Trashes
 ehthumbs.db
+/.claude/agent-memory
