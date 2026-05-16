@@ -59,7 +59,7 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 3: Multi-format bulk import (CSV/JSON/XML)
 - **Goal:** Add `POST /tickets/import` accepting multipart-form file uploads in CSV, JSON, or XML format, returning a summary `{ total, successful, failed, errors[] }` with per-row error messages for malformed input.
