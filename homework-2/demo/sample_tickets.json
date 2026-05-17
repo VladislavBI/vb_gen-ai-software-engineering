@@ -1,0 +1,202 @@
+[
+  {
+    "customerId": "CUST-101",
+    "customerEmail": "john.doe@example.com",
+    "customerName": "John Doe",
+    "subject": "Cannot access dashboard after login",
+    "description": "After successfully logging in, the dashboard page shows a blank screen. This is preventing me from viewing my data. Browser console shows JavaScript errors.",
+    "category": "technical_issue",
+    "priority": "high",
+    "tags": ["dashboard", "ui", "javascript"]
+  },
+  {
+    "customerId": "CUST-102",
+    "customerEmail": "sarah.williams@example.com",
+    "customerName": "Sarah Williams",
+    "subject": "Duplicate charge from previous month",
+    "description": "I noticed I was charged twice in March. Checked my payment history and both transactions went through. Please issue a refund for the duplicate charge.",
+    "category": "billing_question",
+    "priority": "urgent",
+    "tags": ["billing", "refund", "duplicate"]
+  },
+  {
+    "customerId": "CUST-103",
+    "customerEmail": "michael.brown@example.com",
+    "customerName": "Michael Brown",
+    "subject": "Request: Add API for batch operations",
+    "description": "Would like to request an API endpoint that allows batch create/update/delete operations. Currently, we have to make individual requests for each operation.",
+    "category": "feature_request",
+    "priority": "medium",
+    "tags": ["api", "batch", "enhancement"]
+  },
+  {
+    "customerId": "CUST-104",
+    "customerEmail": "jessica.martinez@example.com",
+    "customerName": "Jessica Martinez",
+    "subject": "Mobile app crashes when scrolling large lists",
+    "description": "When scrolling through lists with more than 500 items, the mobile app becomes unresponsive and eventually crashes. Happens on both iOS and Android.",
+    "category": "bug_report",
+    "priority": "high",
+    "tags": ["mobile", "crash", "performance"]
+  },
+  {
+    "customerId": "CUST-105",
+    "customerEmail": "david.garcia@example.com",
+    "customerName": "David Garcia",
+    "subject": "Cannot verify account with 2FA code",
+    "description": "The 2FA SMS arrives but when I enter the code, it says 'Invalid code'. I've tried multiple times and the issue persists.",
+    "category": "account_access",
+    "priority": "high",
+    "tags": ["security", "2fa", "urgent"]
+  },
+  {
+    "customerId": "CUST-106",
+    "customerEmail": "emily.johnson@example.com",
+    "customerName": "Emily Johnson",
+    "subject": "Performance improvement: Lazy loading for large datasets",
+    "description": "Loading pages with large datasets takes too long. Implementing lazy loading or pagination would significantly improve the user experience.",
+    "category": "feature_request",
+    "priority": "medium",
+    "tags": ["performance", "ux", "pagination"]
+  },
+  {
+    "customerId": "CUST-107",
+    "customerEmail": "robert.taylor@example.com",
+    "customerName": "Robert Taylor",
+    "subject": "Database query taking too long",
+    "description": "Queries that previously took 100ms are now taking 2-3 seconds. This is impacting application responsiveness. Need immediate investigation.",
+    "category": "technical_issue",
+    "priority": "urgent",
+    "tags": ["database", "performance", "critical"]
+  },
+  {
+    "customerId": "CUST-108",
+    "customerEmail": "sophia.anderson@example.com",
+    "customerName": "Sophia Anderson",
+    "subject": "Wrong currency shown in billing",
+    "description": "My billing page shows prices in USD but my account is set to EUR. All transactions should be in EUR according to my preferences.",
+    "category": "billing_question",
+    "priority": "medium",
+    "tags": ["currency", "billing", "localization"]
+  },
+  {
+    "customerId": "CUST-109",
+    "customerEmail": "christopher.white@example.com",
+    "customerName": "Christopher White",
+    "subject": "Session expires too quickly",
+    "description": "User sessions expire after only 15 minutes of inactivity. Would be helpful to extend this to 30 or 60 minutes.",
+    "category": "feature_request",
+    "priority": "low",
+    "tags": ["session", "timeout", "ux"]
+  },
+  {
+    "customerId": "CUST-110",
+    "customerEmail": "laura.miller@example.com",
+    "customerName": "Laura Miller",
+    "subject": "Cannot upload files larger than 5MB",
+    "description": "When trying to upload files larger than 5MB, the upload fails silently with no error message. Need to increase file size limit.",
+    "category": "technical_issue",
+    "priority": "medium",
+    "tags": ["upload", "file", "limit"]
+  },
+  {
+    "customerId": "CUST-111",
+    "customerEmail": "james.wilson@example.com",
+    "customerName": "James Wilson",
+    "subject": "Incorrect tax calculation on invoices",
+    "description": "Tax amounts on invoices appear to be calculated incorrectly. For a $1000 purchase, tax shows as $50 but should be $80 (8% rate).",
+    "category": "bug_report",
+    "priority": "high",
+    "tags": ["tax", "billing", "calculation"]
+  },
+  {
+    "customerId": "CUST-112",
+    "customerEmail": "patricia.davis@example.com",
+    "customerName": "Patricia Davis",
+    "subject": "Feature: Export to QuickBooks format",
+    "description": "Would like the ability to export financial data in QuickBooks format for our accountant to import directly.",
+    "category": "feature_request",
+    "priority": "medium",
+    "tags": ["export", "accounting", "integration"]
+  },
+  {
+    "customerId": "CUST-113",
+    "customerEmail": "andrew.jones@example.com",
+    "customerName": "Andrew Jones",
+    "subject": "Password requirements unclear",
+    "description": "Password validation error messages don't clearly explain what requirements aren't met. Just says 'Password is invalid'.",
+    "category": "bug_report",
+    "priority": "low",
+    "tags": ["ux", "validation", "error-message"]
+  },
+  {
+    "customerId": "CUST-114",
+    "customerEmail": "michelle.garcia@example.com",
+    "customerName": "Michelle Garcia",
+    "subject": "Can't modify billing profile after upgrade",
+    "description": "After upgrading to premium plan, the billing profile section became read-only. Need to update payment method but can't access the edit form.",
+    "category": "account_access",
+    "priority": "high",
+    "tags": ["billing", "profile", "upgrade"]
+  },
+  {
+    "customerId": "CUST-115",
+    "customerEmail": "william.rodriguez@example.com",
+    "customerName": "William Rodriguez",
+    "subject": "API documentation out of sync with implementation",
+    "description": "The API response format documented differs from what the actual API returns. Example shows 'status' field but API returns 'ticket_status'.",
+    "category": "technical_issue",
+    "priority": "medium",
+    "tags": ["documentation", "api", "discrepancy"]
+  },
+  {
+    "customerId": "CUST-116",
+    "customerEmail": "barbara.lee@example.com",
+    "customerName": "Barbara Lee",
+    "subject": "Two-factor authentication SMS delays",
+    "description": "SMS codes for 2FA often arrive 2-3 minutes late, sometimes after the code has already expired. Please investigate SMS delivery delays.",
+    "category": "technical_issue",
+    "priority": "high",
+    "tags": ["2fa", "sms", "delay"]
+  },
+  {
+    "customerId": "CUST-117",
+    "customerEmail": "charles.thomas@example.com",
+    "customerName": "Charles Thomas",
+    "subject": "Missing data in exported reports",
+    "description": "When exporting reports to CSV, some fields appear empty even though the data is visible in the web interface. Data loss occurring during export.",
+    "category": "bug_report",
+    "priority": "high",
+    "tags": ["export", "csv", "data-loss"]
+  },
+  {
+    "customerId": "CUST-118",
+    "customerEmail": "deborah.clark@example.com",
+    "customerName": "Deborah Clark",
+    "subject": "Feature: Scheduled reports via email",
+    "description": "Would like the ability to schedule automatic report generation and email delivery at specified intervals (daily, weekly, monthly).",
+    "category": "feature_request",
+    "priority": "medium",
+    "tags": ["reports", "scheduling", "email"]
+  },
+  {
+    "customerId": "CUST-119",
+    "customerEmail": "edward.lopez@example.com",
+    "customerName": "Edward Lopez",
+    "subject": "Cannot login with third-party SSO provider",
+    "description": "Single sign-on with our corporate identity provider stopped working after your recent platform update. OAuth integration appears broken.",
+    "category": "technical_issue",
+    "priority": "urgent",
+    "tags": ["sso", "oauth", "critical"]
+  },
+  {
+    "customerId": "CUST-120",
+    "customerEmail": "frank.harris@example.com",
+    "customerName": "Frank Harris",
+    "subject": "Support for additional payment methods",
+    "description": "Currently only accept credit cards and PayPal. Our international customers would appreciate support for local payment methods like Alipay, WeChat Pay.",
+    "category": "feature_request",
+    "priority": "low",
+    "tags": ["payments", "international", "payment-methods"]
+  }
+]
