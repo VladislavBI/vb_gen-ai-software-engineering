@@ -138,4 +138,12 @@ This milestone builds out the `Homework2.Tests` xUnit test suite to cover all fu
 
 ## Notes
 
-_To be appended during execution: discoveries, deviations, anything noteworthy._
+**Serialization mismatch (request side):** `PostAsJsonAsync` / `PutAsJsonAsync` use default `System.Text.Json` options (PascalCase), but the API expects snake_case property names. Fixed by passing a `JsonSerializerOptions { PropertyNamingPolicy = SnakeCaseLower, Converters = [JsonStringEnumConverter(SnakeCaseLower)] }` to every `PostAsJsonAsync`, `PutAsJsonAsync`, and `ReadFromJsonAsync` call in `TicketsEndpointsTests.cs`.
+
+**Enum filter bug revealed by tests (scope widening):** `GetAllTickets` in `TicketsEndpoints.cs` (Milestone 5 file) used `Enum.TryParse(value, ignoreCase: true)`, which silently fails for snake_case values like `account_access` (since "account_access" ≠ "accountaccess" even case-insensitively). Fixed with `.Replace("_", "")` before parsing. One new integration test `GetTickets_FilterByStatus_SnakeCaseValueParsedCorrectly` added to cover the multi-word case (`in_progress`). This widened the Files scope beyond the session plan; the deviation is justified because the test correctly revealed a shipping bug.
+
+**Dead-code concurrency delete loop:** The mixed concurrency test had `for (int i = 5; i < 10 && i < ticketIds.Count; i++)` which never executed (ticketIds.Count = 5). Fixed to `for (int i = 2; i < 5; i++)` to actually delete 3 tickets, with assertion updated to `HaveCount(7)`.
+
+**Review iterations:** 2 rounds with `code-review-advisor`. Round 1 returned 2 blockers (missing status filter test + dead delete loop). Both fixed before round 2, which gave sign-off with no blocking findings.
+
+**Final test count:** 114 tests (113 from original plan + 1 added for status filter coverage). All pass. Build: 0 warnings, 0 errors.
