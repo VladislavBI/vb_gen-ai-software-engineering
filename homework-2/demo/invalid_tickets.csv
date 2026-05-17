@@ -1,0 +1,6 @@
+CustomerId,CustomerEmail,CustomerName,Subject,Description,Category,Priority,Tags
+CUST-BAD1,invalid-email-format,John Doe,Missing email format,This email is not valid,account_access,high,"urgent,test"
+CUST-BAD2,jane@example.com,,Empty customer name,Description here,technical_issue,medium,"empty,name"
+CUST-BAD3,bob@example.com,Bob Smith,,Missing subject,Description is provided but subject is empty,billing_question,low,"test,missing"
+CUST-BAD4,alice@example.com,Alice Johnson,Valid subject,Description missing completely,feature_request,medium,"test,empty"
+CUST-BAD5,frank@example.com,Frank Miller,Test subject,Test description,invalid_category,invalid_priority,"bad,enum"

@@ -223,4 +223,4 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
   if ($mermaid -lt 3) { throw "need at least 3 Mermaid diagrams across docs (found $mermaid)" }
   if (Select-String -Path homework-2/README.md -Pattern '\[Your Name\]|\[Date\]|YOUR_USERNAME' -Quiet) { throw "README.md still contains template placeholders" }
   ```
-- **Done:** [ ]
+- **Done:** [x]
