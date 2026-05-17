@@ -159,7 +159,7 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
       Pop-Location
   }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 6: Tests — API + BLL + DAL + parsers + classifier with ≥85% coverage
 - **Goal:** Build out `Homework2.Tests` covering API endpoints via `WebApplicationFactory`, BLL services with Moq, DAL repository, validators, all three parsers, the classifier, and end-to-end + concurrency integration scenarios; gate the run on `dotnet test` exit 0, test count > 0, and ≥85% line coverage.

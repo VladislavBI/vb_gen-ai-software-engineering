@@ -38,10 +38,30 @@ public class TicketService
         return await _repository.CreateAsync(ticket);
     }
 
-    /// <summary>Gets all tickets.</summary>
-    public async Task<IReadOnlyList<Ticket>> GetAllAsync()
+    /// <summary>Gets all tickets, optionally filtered by category, priority, and status.</summary>
+    public async Task<IReadOnlyList<Ticket>> GetAllAsync(Category? category = null, Priority? priority = null, Status? status = null)
     {
-        return await _repository.GetAllAsync();
+        IReadOnlyList<Ticket> tickets = await _repository.GetAllAsync();
+
+        // Apply filters with AND semantics: all specified filters must match
+        IEnumerable<Ticket> filtered = tickets.AsEnumerable();
+
+        if (category.HasValue)
+        {
+            filtered = filtered.Where(t => t.Category == category.Value);
+        }
+
+        if (priority.HasValue)
+        {
+            filtered = filtered.Where(t => t.Priority == priority.Value);
+        }
+
+        if (status.HasValue)
+        {
+            filtered = filtered.Where(t => t.Status == status.Value);
+        }
+
+        return filtered.ToList().AsReadOnly();
     }
 
     /// <summary>Gets a ticket by ID.</summary>

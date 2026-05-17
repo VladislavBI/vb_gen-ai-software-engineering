@@ -84,9 +84,32 @@ internal static class TicketsEndpoints
         return Results.Created($"/tickets/{response.Id}", response);
     }
 
-    private static async Task<IResult> GetAllTickets(TicketService service)
+    private static async Task<IResult> GetAllTickets(
+        TicketService service,
+        string? category = null,
+        string? priority = null,
+        string? status = null)
     {
-        IReadOnlyList<Ticket> tickets = await service.GetAllAsync();
+        Category? categoryFilter = null;
+        Priority? priorityFilter = null;
+        Status? statusFilter = null;
+
+        if (!string.IsNullOrWhiteSpace(category) && Enum.TryParse<Category>(category, ignoreCase: true, out Category parsedCategory))
+        {
+            categoryFilter = parsedCategory;
+        }
+
+        if (!string.IsNullOrWhiteSpace(priority) && Enum.TryParse<Priority>(priority, ignoreCase: true, out Priority parsedPriority))
+        {
+            priorityFilter = parsedPriority;
+        }
+
+        if (!string.IsNullOrWhiteSpace(status) && Enum.TryParse<Status>(status, ignoreCase: true, out Status parsedStatus))
+        {
+            statusFilter = parsedStatus;
+        }
+
+        IReadOnlyList<Ticket> tickets = await service.GetAllAsync(categoryFilter, priorityFilter, statusFilter);
         return Results.Ok(tickets.Select(ToResponse).ToList());
     }
 
