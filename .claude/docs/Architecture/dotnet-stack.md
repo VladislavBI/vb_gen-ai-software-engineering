@@ -10,7 +10,7 @@ This file covers **versions and tooling only**. For the rest, see the sibling do
 
 ## Versions
 
-- **.NET SDK**: latest LTS (.NET 10 or newer). Verify with `dotnet --version` before scaffolding.
+- **.NET SDK**: latest LTS (odd major, .NET 10 or newer). Verify with `dotnet --version` before scaffolding.
 - **C# language version**: SDK default; do not pin manually.
 
 ## Project types
