@@ -373,18 +373,18 @@ public sealed class InMemoryTicketRepositoryTests
             }
         }
 
-        // Deletes
-        for (int i = 5; i < 10 && i < ticketIds.Count; i++)
+        // Deletes: delete the last 3 of the initial 5 tickets (indices 2-4)
+        for (int i = 2; i < 5; i++)
         {
-            // Don't delete all, keep some for final state check
+            tasks.Add(repo.DeleteAsync(ticketIds[i]));
         }
 
         await Task.WhenAll(tasks);
 
-        // Assert: Final state should be consistent
+        // Assert: 5 initial - 3 deleted + 5 new concurrent creates = 7 tickets
         var all = await repo.GetAllAsync();
         all.Should().NotBeNull();
-        all.Should().HaveCountGreaterThanOrEqualTo(5);
+        all.Should().HaveCount(7);
     }
 
     [Fact]
@@ -396,29 +396,32 @@ public sealed class InMemoryTicketRepositoryTests
         var originalTicket = CreateTicket(ticketId);
         await repo.CreateAsync(originalTicket);
 
+        // Act: Queue all tasks WITHOUT awaiting them, then await all together so
+        // reads and writes are genuinely concurrent (not serialized inside the loop).
         var readTasks = new List<Task<Ticket?>>();
         var writeTasks = new List<Task<Ticket?>>();
 
-        // Act: Perform reads and writes in parallel
         for (int i = 0; i < 10; i++)
         {
             readTasks.Add(repo.GetByIdAsync(ticketId));
 
             if (i % 2 == 0)
             {
-                var retrieved = await repo.GetByIdAsync(ticketId);
-                if (retrieved != null)
-                {
-                    var updated = retrieved with { Subject = $"Update{i}" };
-                    writeTasks.Add(repo.UpdateAsync(updated));
-                }
+                var updated = originalTicket with { Subject = $"Update{i}" };
+                writeTasks.Add(repo.UpdateAsync(updated));
             }
         }
 
         await Task.WhenAll(readTasks.Cast<Task>().Concat(writeTasks.Cast<Task>()));
 
-        // Assert: All reads should return a non-null ticket
-        var allReads = await Task.WhenAll(readTasks);
+        // Assert: every read returned the ticket (the id never disappears under concurrent updates).
+        var allReads = readTasks.Select(t => t.Result).ToArray();
         allReads.Should().AllSatisfy(t => t.Should().NotBeNull());
+        allReads.Should().AllSatisfy(t => t!.Id.Should().Be(ticketId));
+
+        // Final state: a single ticket with one of the update subjects (last write wins under ConcurrentDictionary).
+        var final = await repo.GetByIdAsync(ticketId);
+        final.Should().NotBeNull();
+        final!.Subject.Should().StartWith("Update");
     }
 }

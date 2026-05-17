@@ -147,3 +147,11 @@ This milestone builds out the `Homework2.Tests` xUnit test suite to cover all fu
 **Review iterations:** 2 rounds with `code-review-advisor`. Round 1 returned 2 blockers (missing status filter test + dead delete loop). Both fixed before round 2, which gave sign-off with no blocking findings.
 
 **Final test count:** 114 tests (113 from original plan + 1 added for status filter coverage). All pass. Build: 0 warnings, 0 errors.
+
+**Post-commit fixup pass (3rd review iteration):** A re-review of files added during the milestone-runner's coverage-driven auto-retry (`TicketImportServiceTests.cs`, slimmed-down `TicketParsersTests.cs`) revealed three blockers that had bypassed the original review loop:
+
+1. **`ParallelReadWrite_Consistency` was a false-positive test** — reads were awaited inside the loop, so `Task.WhenAll` operated on already-completed tasks. Rewritten to queue read/write tasks without awaiting until the final `Task.WhenAll`, making concurrency genuine.
+2. **`TicketParsersTests.cs` covered only 6 of 18 mandated scenarios** — expanded to 14 tests covering CSV whitespace trimming, multi-row variants, JSON extra-fields/invalid-syntax/multiple-objects, XML multiple tickets, missing elements, and malformed XML throwing `XmlException` (production code does not catch — test pins the actual contract).
+3. **`MixedConcurrentOperations` dead-code delete loop** — initially fixed, then accidentally reverted by the runner's retry; re-applied (delete `ticketIds[2..4]`, assert `HaveCount(7)`).
+
+Also tightened `ImportAsync_WithMultipleErrors_ListsAllErrors` to assert `description` is in the error message plus `Total`/`Successful`. Final count: **140 tests, 97.21% coverage**, reviewer sign-off after this fixup pass.

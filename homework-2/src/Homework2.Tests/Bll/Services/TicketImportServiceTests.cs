@@ -112,6 +112,8 @@ public sealed class TicketImportServiceTests
 
         // Assert
         result.Failed.Should().Be(1);
+        result.Total.Should().Be(1);
+        result.Successful.Should().Be(0);
         result.Errors[0].Message.Should().Contain("description");
     }
 
@@ -128,6 +130,8 @@ public sealed class TicketImportServiceTests
 
         // Assert
         result.Failed.Should().Be(1);
+        result.Total.Should().Be(1);
+        result.Successful.Should().Be(0);
         result.Errors[0].Message.Should().Contain("customer_id");
     }
 
@@ -144,9 +148,12 @@ public sealed class TicketImportServiceTests
 
         // Assert
         result.Failed.Should().Be(1);
+        result.Total.Should().Be(1);
+        result.Successful.Should().Be(0);
         result.Errors[0].Message.Should().Contain("customer_id");
         result.Errors[0].Message.Should().Contain("customer_email");
         result.Errors[0].Message.Should().Contain("customer_name");
+        result.Errors[0].Message.Should().Contain("description");
     }
 
     [Fact]
