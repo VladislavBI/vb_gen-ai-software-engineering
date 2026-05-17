@@ -187,7 +187,7 @@ Homework 2 (TASKS.md Tasks 1–5) asks for an intelligent customer support ticke
   Write-Host "Tests: $total run, coverage $([math]::Round($rate*100,2))%"
   Pop-Location
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 7: Finalize documentation, demo, and sample data
 - **Goal:** Produce the multi-level docs (`README.md`, `API_REFERENCE.md`, `ARCHITECTURE.md`, `TESTING_GUIDE.md` with at least 3 Mermaid diagrams across them), substitute every template variable, fill in `HOWTORUN.md` PowerShell-first, capture the test-coverage screenshot, and populate `demo/` with runnable scripts plus `sample_tickets.csv` (50), `sample_tickets.json` (20), `sample_tickets.xml` (30), and at least one invalid file for negative tests.

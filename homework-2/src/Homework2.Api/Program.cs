@@ -14,6 +14,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower;
     options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower));
 });
 
 builder.Services.AddScoped<IValidator<CreateTicketRequest>, CreateTicketValidator>();
@@ -35,3 +36,8 @@ app.MapClassify();
 app.MapTickets();
 
 app.Run();
+
+#pragma warning disable CA1515, CS1591
+/// <summary>Program class for testing purposes.</summary>
+public partial class Program;
+#pragma warning restore CA1515, CS1591

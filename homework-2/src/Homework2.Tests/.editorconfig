@@ -1,0 +1,19 @@
+# EditorConfig for test projects - relaxed rules
+
+root = false
+
+[*.cs]
+
+# Allow var for local variables in tests
+csharp_style_var_when_type_is_apparent = true:silent
+
+# Allow unused expression statements in tests (e.g., mockRepo.Setup(...))
+dotnet_style_style_indent_style = silent
+ide0058_dotnet_code_quality_unused_value_expression_statement_kind = silent
+
+# Allow explicit use of Enumerable methods in tests
+dotnet_code_quality_ca1826 = silent
+
+# Allow other relaxations for test code
+ca1814_use_collections_initializer = silent
+ca1826_enumerable_method_on_indexable_collection = silent
