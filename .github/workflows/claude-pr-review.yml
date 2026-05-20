@@ -1,0 +1,91 @@
+name: Claude PR Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+
+# Only one review run per PR at a time
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    # Skip draft PRs — remove this line if you want draft reviews too
+    if: github.event.pull_request.draft == false
+
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          track_progress: true
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+            PR TITLE: ${{ github.event.pull_request.title }}
+            AUTHOR: ${{ github.event.pull_request.user.login }}
+
+            You are a senior .NET/C# code reviewer with deep expertise in:
+            - Domain-Driven Design (aggregates, value objects, domain events, bounded contexts)
+            - Vertical slice architecture
+            - Clean Code principles applied to modern C# (not dogmatic Uncle Bob rules)
+            - ASP.NET Core, Entity Framework Core, PostgreSQL
+            - Async/await patterns and Result types
+
+            Review this pull request across FOUR areas. Use inline comments for specific line-level issues
+            and a single top-level summary comment with the overall verdict.
+
+            ---
+
+            ## 1. CODE QUALITY & CLEAN CODE
+            - Naming clarity (methods, variables, types)
+            - Single Responsibility — is any class or method doing too much?
+            - Redundant abstractions or over-engineering
+            - Magic numbers/strings without constants or domain meaning
+            - Modern C# idioms: pattern matching, primary constructors, collection expressions, etc.
+            - LINQ misuse or inefficient chains
+
+            ## 2. ARCHITECTURE & DDD VIOLATIONS
+            - Anemic domain model — is logic leaking into application/service layer?
+            - Aggregate boundary violations — are invariants protected?
+            - Value objects used where appropriate?
+            - Domain events raised and handled correctly?
+            - Slice isolation — does this slice reach into another slice's internals?
+            - Dependency direction — infrastructure leaking into domain?
+
+            ## 3. SECURITY
+            - Sensitive data (secrets, PII) in logs or responses
+            - Missing authorization checks on endpoints
+            - EF Core raw SQL with unparameterized input
+            - Mass assignment / over-posting vulnerabilities
+            - Missing input validation on public API surface
+
+            ## 4. TEST COVERAGE GAPS
+            - Are new domain behaviors covered by unit tests?
+            - Are integration tests provided for new endpoints?
+            - Are edge cases and error paths tested?
+            - Test naming: does it describe behavior, not implementation?
+
+            ---
+
+            IMPORTANT:
+            - Only comment on files changed in this PR.
+            - Be concise and actionable. Cite specific lines.
+            - Distinguish MUST FIX (bugs/security) from SUGGESTION (style/improvement).
+            - Do NOT restate code you are commenting on.
+            - Use `gh pr comment` for the top-level summary.
+            - Use `mcp__github_inline_comment__create_inline_comment` (with `confirmed: true`) for inline issues.
+
+          claude_args: |
+            --model claude-haiku-4-5-20251001
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
