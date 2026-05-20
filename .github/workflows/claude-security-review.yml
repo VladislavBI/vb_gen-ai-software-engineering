@@ -1,0 +1,45 @@
+name: Claude Security Review
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    # Narrow to paths where security matters most — adjusted for homework-N/src layout
+    paths:
+      - "homework-*/src/**/Endpoints/**"
+      - "homework-*/src/**/Infrastructure/**"
+      - "homework-*/src/**/Auth/**"
+      - "homework-*/src/**/Persistence/**"
+      - "homework-*/src/**/Program.cs"
+      - "homework-*/src/**/Startup.cs"
+      - "homework-*/**/appsettings*.json"
+      - "homework-*/Dockerfile"
+      - "homework-*/docker-compose*.yml"
+
+concurrency:
+  group: claude-security-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+    # Only run for trusted contributors — protects against prompt injection from external PRs
+    if: |
+      github.event.pull_request.author_association == 'OWNER' ||
+      github.event.pull_request.author_association == 'MEMBER' ||
+      github.event.pull_request.author_association == 'COLLABORATOR'
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 2
+
+      - uses: anthropics/claude-code-security-review@main
+        with:
+          comment-pr: true
+          claude-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          model: claude-haiku-4-5-20251001

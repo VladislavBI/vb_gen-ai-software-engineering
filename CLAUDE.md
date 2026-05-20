@@ -58,6 +58,16 @@ Both `PLAN.md` and the `plans/` directory are graded evidence under AI-Usage Doc
 ### Pull request workflow
 Every homework is submitted via a PR on the student's **own fork** (never upstream). The full process — branch naming, PR body sections, screenshot requirements, reviewer assignment — lives in `.claude/docs/Infrastructure/pull-request-process.md`. Read it before opening a PR or drafting a PR body.
 
+### Claude Code GitHub Actions
+
+Three workflows under `.github/workflows/` run Claude on this repo:
+
+- `claude.yml` — responds when `@claude` is mentioned in an issue, issue comment, PR review, or PR review comment. Uses `anthropics/claude-code-action@v1`.
+- `claude-pr-review.yml` — automatic senior .NET/C# code review on every non-draft PR (`opened`, `synchronize`, `ready_for_review`, `reopened`). Concurrency-guarded; covers code quality, DDD/architecture, security, and test-coverage gaps. Distinguishes MUST FIX from SUGGESTION. Posts inline comments via the GitHub MCP tool plus a top-level summary via `gh pr comment`.
+- `claude-security-review.yml` — focused security scan using `anthropics/claude-code-security-review@main`. Path-filtered to security-relevant files under `homework-*/src/**` (Endpoints, Infrastructure, Auth, Persistence, `Program.cs`, `appsettings*.json`, Dockerfiles). Gated to trusted contributors (`OWNER`/`MEMBER`/`COLLABORATOR`) to prevent prompt-injection from external PRs.
+
+The `ANTHROPIC_API_KEY` secret and the Claude GitHub App are configured on the fork. Never commit the key; reference it only via `${{ secrets.ANTHROPIC_API_KEY }}`. When adjusting permissions, edit the workflow's `permissions:` block — not repo-wide settings. When adding new homework directories with a different src layout, update the `paths:` filter in `claude-security-review.yml`.
+
 ### Template variables
 Each `homework-N/README.md` ships with placeholder variables (`[Your Name]`, `[Date]`, `YOUR_USERNAME`, etc.) that must be filled in before submission. The full list, the values to substitute, and where each one appears are documented in `.claude/docs/Infrastructure/template-variables.md`. Apply substitutions automatically when finalizing a homework's `README.md`.
 
