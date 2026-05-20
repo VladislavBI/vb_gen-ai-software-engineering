@@ -79,3 +79,6 @@ temp/
 .Trashes
 ehthumbs.db
 /.claude/agent-memory
+
+# Playwright MCP browser snapshots
+.playwright-mcp/
