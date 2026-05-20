@@ -14,6 +14,12 @@ The development environment is **Windows 11 with PowerShell 5.1 as the primary s
 
 When verifying via the Bash/PowerShell tools, prefer the `PowerShell` tool over `Bash` for any command the user might re-run. The `Bash` tool here runs against an MSYS-style bash and produces different paths/behaviour than the user sees in their shell.
 
+**Script length limit — 965 bytes per call.** Claude Code requires manual user approval for any single PowerShell or Bash script that exceeds 965 bytes. To stay within the limit:
+- Use `PowerShell` tool calls, not `Bash`, for all Verify steps (project settings allow `PowerShell(*)`).
+- **Split every Verify block into exactly two PowerShell tool calls** — one for build, one for run+assert+cleanup (see canonical pattern below).
+- When writing session plans and PLAN.md Verify blocks, always write two separate commands, not one combined script.
+- Avoid `Bash(*)` for anything with a PowerShell equivalent — prefer PowerShell to avoid needing separate Bash allowlist entries.
+
 ## Project-wide verification snippets
 
 ```powershell
@@ -36,23 +42,30 @@ Invoke-RestMethod -Uri http://localhost:5080/transactions -Method Post `
 
 ## Canonical Verify pattern for endpoint milestones
 
-Every milestone whose `Verify` block exercises a live endpoint follows this shape — build, start the API in the background, poll, assert with `Invoke-RestMethod`, and **always stop the process in `finally`** so a failed assertion does not leave a port-bound dotnet process behind:
+Every milestone whose `Verify` block exercises a live endpoint uses **exactly two PowerShell tool calls** — build (call 1) and run+assert+cleanup (call 2). This keeps each call under the 965-byte limit and maps to the two logical phases.
 
+**Verify call 1 — Build only:**
+```powershell
+dotnet build homework-N\src\HomeworkN.sln
+if ($LASTEXITCODE -ne 0) { throw "build failed" }
+```
+
+**Verify call 2 — Run, assert, and cleanup** (always stop the process in `finally` so a failed assertion does not leave a port-bound dotnet process behind):
 ```powershell
 Push-Location homework-N\src
-dotnet build HomeworkN.sln
-if ($LASTEXITCODE -ne 0) { Pop-Location; throw "build failed" }
-$proc = Start-Process -FilePath dotnet `
+$proc = Start-Process dotnet `
     -ArgumentList 'run --project HomeworkN.Api --no-build --urls http://localhost:5080' `
     -PassThru -WindowStyle Hidden
 try {
-    Start-Sleep -Seconds 4   # give Kestrel time to bind; raise if cold-start is slow
-    # ... Invoke-RestMethod / Invoke-WebRequest assertions go here ...
+    Start-Sleep -Seconds 4
+    # Invoke-RestMethod assertions go here, one per logical check
 } finally {
     Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
     Pop-Location
 }
 ```
+
+When writing PLAN.md Verify blocks or session-plan Verify sections, **always write two separate `PowerShell` commands** in this order. Never merge them into one script. If the assertion section in call 2 still approaches 965 bytes, split the assertions across additional PowerShell calls (reusing the same `$proc` is not possible across calls — start a fresh process per call if needed, or use `Invoke-RestMethod` inside a foreach loop to batch checks).
 
 ### Port discipline
 

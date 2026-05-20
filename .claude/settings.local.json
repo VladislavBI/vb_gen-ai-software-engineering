@@ -1,22 +1,22 @@
 {
   "permissions": {
     "allow": [
+      "PowerShell(*)",
       "Bash(dir *)",
-      "PowerShell(Get-ChildItem *)",
-      "PowerShell(Get-Content *)",
       "Bash(mkdir *)",
       "Bash(dotnet new *)",
+      "Bash(dotnet build *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(PLAN\")",
-      "PowerShell(Get-ChildItem -Path \"D:\\\\Work\\\\learn\\\\Courses\\\\AI -set\\\\lecture-1\\\\vb_gen-ai-software-engineering\\\\homework-1\" -Directory | Where-Object { $_.Name -eq \"plans\" })",
       "Bash(git diff *)",
+      "Bash(git status *)",
+      "Bash(git log *)",
+      "Bash(git rev-parse *)",
       "Read(//tmp/**)",
-      "Bash(cd /d \"D:\\\\Work\\\\learn\\\\Courses\\\\AI -set\\\\lecture-1\\\\vb_gen-ai-software-engineering\\\\homework-1\\\\src\")",
-      "Bash(Get-ChildItem -Recurse -Directory -Name)",
-      "Bash(dotnet build *)",
-      "PowerShell(Get-Process *)",
-      "PowerShell(taskkill *)"
+      "Bash(Get-ChildItem D:\\\\Work\\\\learn\\\\Courses\\\\AI -set\\\\lecture-1\\\\vb_gen-ai-software-engineering\\\\homework-2\\\\docs\\\\screenshots *)",
+      "Bash(Get-ChildItem -Path . -Recurse -Include \"*.runsettings\", \"*.config\", \".coverletrc*\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object FullName)",
+      "mcp__plugin_playwright_playwright__browser_navigate"
     ]
   }
 }
