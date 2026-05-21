@@ -186,6 +186,8 @@ For each milestone, the consumer MUST run this loop **before** running the `Veri
 
 The inner loop catches what `Verify` cannot: style, security smells, hidden bugs, contract issues. The outer `Verify` catches what review cannot: behavioral regressions and broken integrations.
 
+> **Actor split (orchestrated runtimes).** This spec is actor-neutral: the loop's steps MAY be divided across actors. An *orchestrator* may own the reviewer invocation (steps 3 and 5) while a separate *editor* owns the edits and fixes (steps 2 and 4). This is how the `/homework` skill runs it — the **skill** invokes `code-review-advisor` and decides when the loop is clean, while the **milestone-runner** only edits, writes the diff to a transient `plans/.review-<N>.diff` file for the reviewer to read, and applies the findings the orchestrator hands back. The split exists because the runner is a small model: keeping control flow on the stronger orchestrator makes the gates structural (each runner dispatch is one step ending in a return) instead of behavioral. The loop's *sequence* and the "no `Verify` until review is clean" rule are unchanged regardless of how actors are assigned. The `.review-<N>.diff` file is runtime scratch — it MUST be deleted before the milestone commit and MUST NOT be committed as evidence.
+
 ## Failure handling policy
 
 When a `Verify` command exits non-zero, the consumer follows this rule:
@@ -280,6 +282,7 @@ One milestone = one commit. PR-readiness work (README finalization, screenshot a
 - Do **not** widen a milestone's `Files` list (in either super-plan or session plan) during execution. If implementation reveals a missing file, stop and re-plan.
 - Do **not** dispatch a `Parallel: sequential` milestone concurrently with anything.
 - Do **not** assume `Parallel: safe` covers port or DB collisions — it only covers file-list disjointness.
+- Do **not** commit the transient review diff (`plans/.review-<N>.diff`) — it is runtime scratch handed to the reviewer, not graded evidence. Delete it before the milestone commit.
 
 ## Verification before PR
 
