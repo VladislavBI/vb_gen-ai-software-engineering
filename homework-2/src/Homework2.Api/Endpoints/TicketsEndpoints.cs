@@ -21,7 +21,8 @@ internal static class TicketsEndpoints
 
         _ = group.MapGet("/", GetAllTickets)
             .WithName("GetAllTickets")
-            .Produces<IReadOnlyList<TicketResponse>>(StatusCodes.Status200OK);
+            .Produces<IReadOnlyList<TicketResponse>>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest);
 
         _ = group.MapGet("/{id}", GetTicketById)
             .WithName("GetTicketById")
@@ -84,9 +85,35 @@ internal static class TicketsEndpoints
         return Results.Created($"/tickets/{response.Id}", response);
     }
 
-    private static async Task<IResult> GetAllTickets(TicketService service)
+    private static async Task<IResult> GetAllTickets(
+        TicketService service,
+        string? category = null,
+        string? priority = null,
+        string? status = null)
     {
-        IReadOnlyList<Ticket> tickets = await service.GetAllAsync();
+        // Validate category enum
+        if (!string.IsNullOrWhiteSpace(category) && !TryParseSnakeCaseEnumValid<Category>(category, out Category? parsedCategory))
+        {
+            return Results.BadRequest(new { error = $"Invalid category value: {category}" });
+        }
+
+        // Validate priority enum
+        if (!string.IsNullOrWhiteSpace(priority) && !TryParseSnakeCaseEnumValid<Priority>(priority, out Priority? parsedPriority))
+        {
+            return Results.BadRequest(new { error = $"Invalid priority value: {priority}" });
+        }
+
+        // Validate status enum
+        if (!string.IsNullOrWhiteSpace(status) && !TryParseSnakeCaseEnumValid<Status>(status, out Status? parsedStatus))
+        {
+            return Results.BadRequest(new { error = $"Invalid status value: {status}" });
+        }
+
+        Category? filterCategory = TryParseSnakeCaseEnum<Category>(category);
+        Priority? filterPriority = TryParseSnakeCaseEnum<Priority>(priority);
+        Status? filterStatus = TryParseSnakeCaseEnum<Status>(status);
+
+        IReadOnlyList<Ticket> tickets = await service.GetAllAsync(filterCategory, filterPriority, filterStatus);
         return Results.Ok(tickets.Select(ToResponse).ToList());
     }
 
@@ -174,4 +201,46 @@ internal static class TicketsEndpoints
     private static string EnumToSnakeCase(string enumValue) =>
         System.Text.RegularExpressions.Regex.Replace(enumValue, "(?<!^)(?=[A-Z])", "_").ToLowerInvariant();
 #pragma warning restore CA1308
+
+    private static bool TryParseSnakeCaseEnumValid<T>(string snakeCaseValue, out T? result) where T : struct, Enum
+    {
+        result = null;
+
+        string pascalCaseValue = System.Text.RegularExpressions.Regex.Replace(
+            snakeCaseValue,
+            "_([a-z])",
+            m => m.Groups[1].Value.ToUpperInvariant()
+        );
+        pascalCaseValue = char.ToUpperInvariant(pascalCaseValue[0]) + pascalCaseValue[1..];
+
+        if (Enum.TryParse<T>(pascalCaseValue, ignoreCase: true, out T parsedResult))
+        {
+            result = parsedResult;
+            return true;
+        }
+
+        return false;
+    }
+
+    private static T? TryParseSnakeCaseEnum<T>(string? snakeCaseValue) where T : struct, Enum
+    {
+        if (string.IsNullOrWhiteSpace(snakeCaseValue))
+        {
+            return null;
+        }
+
+        string pascalCaseValue = System.Text.RegularExpressions.Regex.Replace(
+            snakeCaseValue,
+            "_([a-z])",
+            m => m.Groups[1].Value.ToUpperInvariant()
+        );
+        pascalCaseValue = char.ToUpperInvariant(pascalCaseValue[0]) + pascalCaseValue[1..];
+
+        if (Enum.TryParse<T>(pascalCaseValue, ignoreCase: true, out T result))
+        {
+            return result;
+        }
+
+        return null;
+    }
 }

@@ -13,7 +13,8 @@
       "Bash(git log *)",
       "Bash(git rev-parse *)",
       "Read(//tmp/**)",
-      "Bash(Test-Path homework-2/plans/.review-5.diff)"
+      "Bash(Test-Path homework-2/plans/.review-5.diff)",
+      "Bash(Test-Path homework-2/plans/milestone-5.md)"
     ]
   }
 }
