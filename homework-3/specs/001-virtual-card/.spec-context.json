@@ -1,0 +1,50 @@
+{
+  "workflow": "speckit",
+  "specName": "001-virtual-card",
+  "branch": "001-virtual-card",
+  "selectedAt": "2026-05-23T17:28:18.892Z",
+  "currentStep": "plan",
+  "status": "planning",
+  "stepHistory": {
+    "specify": {
+      "startedAt": "2026-05-23T17:26:49.078Z",
+      "completedAt": "2026-05-23T17:39:44.445Z"
+    },
+    "plan": {
+      "startedAt": "2026-05-23T17:39:44.447Z",
+      "completedAt": null
+    }
+  },
+  "transitions": [
+    {
+      "step": "plan",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-23T17:38:41.477Z"
+    },
+    {
+      "step": "specify",
+      "substep": null,
+      "from": {
+        "step": "specify",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-23T17:39:44.445Z"
+    },
+    {
+      "step": "plan",
+      "substep": null,
+      "from": {
+        "step": "plan",
+        "substep": null
+      },
+      "by": "extension",
+      "at": "2026-05-23T17:39:44.447Z"
+    }
+  ]
+}
