@@ -63,10 +63,9 @@ public class OrderCalculatorTests
     [Fact]
     public void IsAdmin_CorrectToken_ReturnsTrue()
     {
-        // This test documents the seeded security issue: the token is hardcoded.
-        // The security-verifier agent will flag this; the bug-fixer will move the
-        // token to config. After the fix this test will be updated to use config.
-        bool result = TokenAuthenticator.IsAdmin("super-secret-admin-token-123");
+        // Token is now read from the ADMIN_TOKEN environment variable at runtime.
+        Environment.SetEnvironmentVariable("ADMIN_TOKEN", "super-secret-admin-token-1234");
+        bool result = TokenAuthenticator.IsAdmin("super-secret-admin-token-1234");
         result.Should().BeTrue();
     }
 }

@@ -9,7 +9,7 @@ public static class OrderCalculator
     // BUG 1: uses > instead of >= — exactly 10 units receives no discount.
     public static decimal GetDiscountRate(int quantity)
     {
-        return quantity > 10 ? 0.10m : 0m;
+        return quantity >= 10 ? 0.10m : 0m;
     }
 
     // Calculates the final total for an order item.
@@ -20,8 +20,8 @@ public static class OrderCalculator
     {
         decimal subtotal = item.UnitPrice * item.Quantity;
         decimal discount = GetDiscountRate(item.Quantity);
-        decimal tax = subtotal * TaxRate;           // BUG: should be (subtotal * (1-discount)) * TaxRate
-        return subtotal - (subtotal * discount) + tax;
+        decimal discountedSubtotal = subtotal * (1m - discount);
+        return discountedSubtotal * (1m + TaxRate);
     }
 
     // Returns the average unit price across a list of items.
