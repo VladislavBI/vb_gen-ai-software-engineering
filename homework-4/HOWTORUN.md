@@ -85,7 +85,7 @@ After the pipeline completes:
 ```powershell
 # Bug 1 fixed — qty=10 now gets 10% discount
 dotnet run --project src/SampleApp -- total 10 100
-# Expected: Discount: 10%, Total: 97.20  (100*10 * 0.9 * 1.08)
+# Expected: Discount: 10%, Total: 972.00  (100 * 10 * 0.9 * 1.08)
 
 # Bug 2 fixed — tax now on discounted subtotal
 dotnet run --project src/SampleApp -- total 20 100
