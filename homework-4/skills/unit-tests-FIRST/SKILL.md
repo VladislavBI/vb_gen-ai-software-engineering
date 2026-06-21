@@ -33,6 +33,62 @@ writing tests and confirms compliance in `test-report.md`.
 - [ ] Exactly the expected outcome is asserted; failure message is meaningful (S).
 - [ ] At least one test targets the regression the fix addressed (T).
 
+## Code Examples
+
+**Good — FIRST-compliant test (xUnit + Moq, C#):**
+
+```csharp
+// Fast, Independent, Repeatable, Self-validating, Timely
+[Fact]
+public void CalculateBalance_DeductsDebitsFromCredits()
+{
+    // Arrange — own state, no shared fixtures
+    var transactions = new List<Transaction>
+    {
+        new(Id: Guid.NewGuid(), Amount: 100m, Type: TransactionType.Credit, Status: TransactionStatus.Completed),
+        new(Id: Guid.NewGuid(), Amount: 30m,  Type: TransactionType.Debit,  Status: TransactionStatus.Completed),
+    };
+    var repo = new Mock<ITransactionRepository>();
+    repo.Setup(r => r.GetByAccountId(It.IsAny<Guid>())).Returns(transactions);
+    var sut = new AccountService(repo.Object);
+
+    // Act
+    var balance = sut.CalculateBalance(Guid.NewGuid());
+
+    // Assert — explicit, no log inspection
+    balance.Should().Be(70m);
+}
+```
+
+**Bad — violates Fast (real DB) and Repeatable (wall-clock):**
+
+```csharp
+// ❌ Do NOT write tests like this
+[Fact]
+public async Task CreateTicket_PersistsToDatabase()
+{
+    using var db = new AppDbContext(realConnectionString); // I/O — violates F
+    var service = new TicketService(db);
+    var ticket = new Ticket { CreatedAt = DateTime.Now }; // wall-clock — violates R
+    await service.CreateAsync(ticket);
+    var result = await db.Tickets.FindAsync(ticket.Id);
+    Assert.NotNull(result);
+}
+```
+
+**Regression-case pattern (Timely — targets the specific bug):**
+
+```csharp
+[Fact]
+public void ProcessItems_EmptyList_DoesNotThrow()
+{
+    // Regression for bug-001: NullReferenceException when items list was empty
+    var sut = new ItemProcessor();
+    var act = () => sut.Process(new List<Item>());
+    act.Should().NotThrow();
+}
+```
+
 ## How to Report
 
 In `test-report.md`, include a **FIRST Compliance** section: for each generated test (or test
