@@ -45,7 +45,7 @@ Homework 5 (TASKS.md Tasks 1–4) requires configuring three external MCP server
     if ($LASTEXITCODE -ne 0) { throw 'server import failed' }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 3: Resource + `read` tool with word-count limiting
 - **Goal:** Implement the `lorem-ipsum` Resource and the `read` Tool so both return exactly `word_count` words (default 30, configurable) via a shared helper.
