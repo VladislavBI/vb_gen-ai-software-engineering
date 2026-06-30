@@ -82,3 +82,4 @@ ehthumbs.db
 
 # Playwright MCP browser snapshots
 .playwright-mcp/
+/homework-4/.claude/agent-memory/

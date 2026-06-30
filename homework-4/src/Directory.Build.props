@@ -1,0 +1,23 @@
+<Project>
+  <!--
+    RELAXED build config for the homework-4 sample app.
+
+    Unlike the repo-wide .claude/static/Directory.Build.props (AnalysisMode=All,
+    TreatWarningsAsErrors, SonarAnalyzer), this app intentionally ships with
+    seeded bugs and a seeded security issue for the 4-agent pipeline to find.
+    Strict analyzers (e.g. Sonar S2068 hardcoded-credential) would FAIL the build
+    on those seeded flaws and stop the pipeline from ever running `dotnet test`.
+    We deliberately relax the gate here so the build stays green and the LLM
+    security-verifier agent is the thing that surfaces the issue.
+
+    See context/bugs/001/bug-context.md for the catalogue of intentional flaws.
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AnalysisMode>Default</AnalysisMode>
+    <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+</Project>
