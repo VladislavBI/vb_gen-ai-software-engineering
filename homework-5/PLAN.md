@@ -25,7 +25,7 @@ Homework 5 (TASKS.md Tasks 1–4) requires configuring three external MCP server
   if ($count -lt 4) { throw "expected >=4 servers, got $count" }
   Write-Host "mcp.json valid: $count servers"
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 2: Custom FastMCP server skeleton + dependencies
 - **Goal:** Stand up an importable FastMCP server module with its `fastmcp` dependency declared and a `lorem-ipsum.md` source the resource will read.
