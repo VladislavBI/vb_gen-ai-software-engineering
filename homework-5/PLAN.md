@@ -61,7 +61,7 @@ Homework 5 (TASKS.md Tasks 1–4) requires configuring three external MCP server
     if ($LASTEXITCODE -ne 0) { throw 'read word-count behavior failed' }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 4: Tests — `read` tool word-count coverage (pytest)
 - **Goal:** Add a pytest suite that calls the `read` tool over FastMCP's in-memory client and asserts exactly 30 words by default and exactly N words for a custom `word_count`.
