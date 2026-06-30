@@ -79,7 +79,7 @@ Homework 5 (TASKS.md Tasks 1–4) requires configuring three external MCP server
     if ($LASTEXITCODE -ne 0) { throw "pytest failed or collected zero tests (exit $LASTEXITCODE; pytest exit 5 = no tests)" }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 5: MCP interaction screenshots (four servers)
 - **Goal:** Capture one MCP-call result screenshot for each configured server: GitHub, Filesystem, Jira-or-Notion, and the custom `read` tool.
