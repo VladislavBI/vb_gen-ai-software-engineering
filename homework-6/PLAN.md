@@ -44,7 +44,7 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
     if ($msgs.Count -lt 8) { throw "expected 8 input messages, got $($msgs.Count)" }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 3: Agent 2b — Three cooperating agents run end-to-end
 - **Goal:** Implement Transaction Validator, Fraud Detector, and Compliance Checker as `process_message`-style agents chained by the integrator so a full `python integrator.py` run writes one result per transaction to `shared/results/`.
