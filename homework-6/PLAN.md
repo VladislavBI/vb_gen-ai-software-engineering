@@ -25,7 +25,7 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
   $cmd = Get-Content homework-6/.claude/commands/write-spec.md -Raw
   if ($cmd -notmatch 'specification') { throw 'write-spec skill does not reference the spec template' }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 2: Agent 2a — Pipeline scaffold, message bus, and integrator setup
 - **Goal:** Stand up the `src/` project (deps, package layout), the `shared/` directory bus, a JSON-message helper, and an integrator that on `--setup` creates the four `shared/` dirs and loads `sample-transactions.json` into `shared/input/`.
