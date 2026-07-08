@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"if (Test-Path homework-6/src) { Push-Location homework-6/src; try { python ../scripts/check_coverage.py --min 80; if ($LASTEXITCODE -ne 0) { Write-Host 'Coverage gate check failed (< 80%). Consider running tests before proceeding.'; exit 1 } } finally { Pop-Location } }\""
+          }
+        ]
+      }
+    ]
+  }
+}
