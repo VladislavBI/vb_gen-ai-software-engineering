@@ -68,9 +68,9 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
 - **Done:** [x]
 
 ### Milestone 4: Task 4 — Dual MCP: context7 research-notes + custom FastMCP server
-- **Goal:** Configure both servers in `mcp.json`, document ≥2 context7 queries in `research-notes.md`, and build `src/mcp/server.py` exposing tools `get_transaction_status` + `list_pipeline_results` and resource `pipeline://summary`.
+- **Goal:** Configure both servers in `mcp.json`, document ≥2 context7 queries in `research-notes.md`, and build `src/pipeline_mcp/server.py` exposing tools `get_transaction_status` + `list_pipeline_results` and resource `pipeline://summary`.
 - **Why this milestone:** Task 4 requires both MCP servers wired together and the custom server must read real `shared/results/`, so it depends on the pipeline producing results. Documenting context7 queries is a graded Agent-2 requirement.
-- **Files:** homework-6/mcp.json, homework-6/research-notes.md, homework-6/src/mcp/server.py, homework-6/src/mcp/__init__.py
+- **Files:** homework-6/mcp.json, homework-6/research-notes.md, homework-6/src/pipeline_mcp/server.py, homework-6/src/pipeline_mcp/__init__.py
 - **Depends on:** 3
 - **Parallel:** sequential
 - **Verify:**
@@ -82,12 +82,13 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
   if (([regex]::Matches($rn, '(?im)^##\s*Query')).Count -lt 2) { throw 'research-notes needs >=2 context7 queries' }
   Push-Location homework-6/src
   try {
-    $out = python -c "from mcp.server import get_transaction_status, list_pipeline_results; print(len(list_pipeline_results())); print(get_transaction_status('TXN001'))"
+    $out = python -c "from pipeline_mcp.server import get_transaction_status, list_pipeline_results; print(len(list_pipeline_results())); print(get_transaction_status('TXN001'))"
     if ($LASTEXITCODE -ne 0) { throw 'FastMCP tool functions failed to execute' }
-    if ($out -notmatch 'TXN001') { throw 'get_transaction_status did not return TXN001 status' }
+    if (($out -join ' ') -notmatch 'TXN001') { throw 'get_transaction_status did not return TXN001 status' }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+  *Note: module renamed from `mcp` to `pipeline_mcp` during implementation (milestone 4 review) — a local package named `mcp` shadows the installed `mcp` SDK that FastMCP depends on, which would break imports. Files/Verify updated here to match the reviewer-approved fix (milestone still `[~]` at time of edit, not yet frozen).*
+- **Done:** [x]
 
 ### Milestone 5: Tests — per-agent units + full-pipeline integration with coverage gate
 - **Goal:** Build a pytest suite in `src/tests/` with a unit test per agent plus one integration test of the full pipeline, isolated from real `shared/` via `tmp_path`, and reach ≥80% coverage (aim ≥90%).
