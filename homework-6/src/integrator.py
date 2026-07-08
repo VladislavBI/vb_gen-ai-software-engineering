@@ -136,7 +136,7 @@ def run_pipeline() -> None:
             message = check_compliance(message)
 
             processed_count += 1
-            print(f"  ✓ Message {message_id} processed successfully")
+            print(f"  [OK] Message {message_id} processed successfully")
 
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from {input_file.name}: {e}", file=sys.stderr)
