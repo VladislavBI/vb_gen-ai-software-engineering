@@ -179,7 +179,7 @@ def main():
         print("Starting setup mode...")
         setup_directories()
         # sample-transactions.json is in the homework root (parent of src)
-        sample_file = Path(__file__).parent.parent / "sample-transactions.json"
+        sample_file = Path(__file__).resolve().parent.parent / "sample-transactions.json"
         load_transactions_and_queue(str(sample_file))
         print("Setup complete.")
     else:

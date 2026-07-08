@@ -145,4 +145,4 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
   foreach ($s in 'pipeline-run','test-coverage','skill-run-pipeline','hook-trigger','mcp-interaction') { if (-not (Test-Path "homework-6/docs/screenshots/$s.png")) { throw "missing screenshot: $s.png" } }
   ```
   *Manual follow-up: `pipeline-run.png`, `test-coverage.png`, `skill-run-pipeline.png`, `hook-trigger.png`, and `mcp-interaction.png` must be captured interactively and embedded in the PR description.*
-- **Done:** [ ]
+- **Done:** [~]
