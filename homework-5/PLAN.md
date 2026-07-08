@@ -95,7 +95,7 @@ Homework 5 (TASKS.md Tasks 1–4) requires configuring three external MCP server
   if (-not $cfg.mcpServers.custom) { throw 'custom server not registered in mcp.json' }
   Write-Host 'all four MCP result screenshots present'
   ```
-- **Done:** [ ]
+- **Done:** [~]
 
 ### Milestone 6: Finalize documentation (README, HOWTORUN, demo, Resources-vs-Tools)
 - **Goal:** Complete `README.md` (author name, no template placeholders), `HOWTORUN.md` (install deps, run server, connect MCP config, use/test `read`), the Resources-vs-Tools explanation, and a runnable demo script.
@@ -113,4 +113,4 @@ Homework 5 (TASKS.md Tasks 1–4) requires configuring three external MCP server
   if (-not (Select-String -Path homework-5\HOWTORUN.md -Pattern 'fastmcp' -Quiet)) { throw 'HOWTORUN missing install instructions' }
   Write-Host 'documentation finalized'
   ```
-- **Done:** [ ]
+- **Done:** [~]

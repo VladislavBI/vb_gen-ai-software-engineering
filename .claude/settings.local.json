@@ -16,7 +16,10 @@
       "Bash(Get-ChildItem D:\\\\Work\\\\learn\\\\Courses\\\\AI -set\\\\lecture-1\\\\vb_gen-ai-software-engineering\\\\homework-2\\\\docs\\\\screenshots *)",
       "Bash(Get-ChildItem -Path . -Recurse -Include \"*.runsettings\", \"*.config\", \".coverletrc*\" -ErrorAction SilentlyContinue)",
       "Bash(Select-Object FullName)",
-      "mcp__plugin_playwright_playwright__browser_navigate"
+      "mcp__plugin_playwright_playwright__browser_navigate",
+      "Bash(git pull *)",
+      "Bash(git checkout *)",
+      "Bash(git commit *)"
     ]
   }
 }
