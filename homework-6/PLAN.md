@@ -65,7 +65,7 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
     if ($txt -notmatch 'XYZ' -or $txt -notmatch 'risk') { throw 'results missing fraud/compliance decision fields' }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 4: Task 4 — Dual MCP: context7 research-notes + custom FastMCP server
 - **Goal:** Configure both servers in `mcp.json`, document ≥2 context7 queries in `research-notes.md`, and build `src/mcp/server.py` exposing tools `get_transaction_status` + `list_pipeline_results` and resource `pipeline://summary`.

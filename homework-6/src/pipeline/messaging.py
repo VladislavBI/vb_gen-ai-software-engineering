@@ -6,6 +6,17 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 
+def redact_account(account_id: str) -> str:
+    """Redact account number for logging (e.g., ACC-1001 -> ACC-10*** **01).
+
+    Keeps first 6 characters and last 2 characters, masks the middle.
+    """
+    if not account_id or len(account_id) < 8:
+        return account_id
+    # Format: first 6 chars + *** + space + last 2 chars
+    return account_id[:6] + '*** **' + account_id[-2:]
+
+
 def load_sample_transactions(path: str) -> list[dict]:
     """
     Load and parse sample transactions from a JSON file.

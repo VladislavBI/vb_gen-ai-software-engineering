@@ -83,3 +83,6 @@ ehthumbs.db
 # Playwright MCP browser snapshots
 .playwright-mcp/
 /homework-4/.claude/agent-memory/
+
+# Homework 6: runtime artifacts and message-passing files
+/homework-6/src/shared/
