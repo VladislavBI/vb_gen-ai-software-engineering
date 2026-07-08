@@ -67,7 +67,7 @@ def detect_fraud(message: dict) -> dict:
     except (InvalidOperation, ValueError, TypeError, AttributeError):
         pass
 
-    # Risk factor 2: Off-hours transactions (< 06:00 or > 22:00) - 20%
+    # Risk factor 2: Off-hours transactions (< 06:00 or > 22:00:00) - 20%
     try:
         timestamp_str = transaction.get('timestamp', '')
         if timestamp_str:
@@ -76,9 +76,11 @@ def detect_fraud(message: dict) -> dict:
                 timestamp_str = timestamp_str[:-1]
             dt = datetime.fromisoformat(timestamp_str)
             hour = dt.hour
+            minute = dt.minute
+            second = dt.second
 
-            # Off-hours: strictly before 06:00 or strictly after 22:00
-            if hour < NORMAL_HOURS_START or hour > NORMAL_HOURS_END:
+            # Off-hours: strictly before 06:00 or after 22:00:00 (22:00:01+)
+            if hour < NORMAL_HOURS_START or hour > NORMAL_HOURS_END or (hour == NORMAL_HOURS_END and (minute > 0 or second > 0)):
                 off_hours = True
                 risk_score += Decimal('20')
     except (ValueError, AttributeError):

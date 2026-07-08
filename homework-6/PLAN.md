@@ -104,7 +104,7 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
     if ($LASTEXITCODE -ne 0) { throw "pytest failed or coverage < 80% (exit $LASTEXITCODE; exit 5 = no tests collected)" }
   } finally { Pop-Location }
   ```
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 6: Agent 3 — /run-pipeline, /validate-transactions skills + coverage-gate push hook
 - **Goal:** Add the two slash commands and a coverage-gate: `scripts/check_coverage.py --min <n>` that exits non-zero below threshold, wired as a push-blocking hook in `.claude/settings.json`.
