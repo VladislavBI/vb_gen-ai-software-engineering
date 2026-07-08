@@ -126,7 +126,7 @@ Final capstone (TASKS.md Tasks 1–5): build **four meta-agents** whose output i
   } finally { Pop-Location }
   ```
   *Manual follow-up: capture `docs/screenshots/skill-run-pipeline.png` and `hook-trigger.png` by running `/run-pipeline` and triggering the push hook interactively.*
-- **Done:** [ ]
+- **Done:** [x]
 
 ### Milestone 7: Agent 4 — Finalize documentation, demo, and screenshots
 - **Goal:** Write `README.md` (author "Vlad Bairak", 1–2 paragraph overview, per-agent bullets, ASCII pipeline diagram, tech-stack table), `HOWTORUN.md` numbered steps, populate `demo/` with runnable scripts/sample requests, and collect the 5 required screenshots.
